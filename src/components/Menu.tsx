@@ -30,18 +30,20 @@ const links: LinkItem[] = [
   }
 ];
 
-const useMenuInit = (setIsOpen: (state: boolean) => void) => {
+const useMenu = (): [boolean, (state: boolean) => void] => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const location = useLocation();
 
   useEffect(() => {
     setIsOpen(false);
     // eslint-disable-next-line
   }, [location]);
+
+  return [isOpen, setIsOpen];
 };
 
 const Menu: React.FC = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  useMenuInit(setIsOpen);
+  const [isOpen, setIsOpen] = useMenu();
 
   return (
     <>
