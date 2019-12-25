@@ -1,19 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import { TransitionStatus } from 'react-transition-group/Transition';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const TRANSITION_DURATION = 300;
 
 interface LinkItem {
   label: string;
   url: string;
-}
-
-interface Props {
-  isOpen: boolean;
-  onSwitch: () => void;
 }
 
 const links: LinkItem[] = [
@@ -35,11 +30,23 @@ const links: LinkItem[] = [
   }
 ];
 
-const Menu: React.FC<Props> = props => {
+const useMenuInit = (setIsOpen: (state: boolean) => void) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsOpen(false);
+    // eslint-disable-next-line
+  }, [location]);
+};
+
+const Menu: React.FC = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  useMenuInit(setIsOpen);
+
   return (
     <>
-      <IconBars onClick={props.onSwitch} isOpen={props.isOpen} />
-      <CSSTransition in={props.isOpen} timeout={TRANSITION_DURATION}>
+      <IconBars onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+      <CSSTransition in={isOpen} timeout={TRANSITION_DURATION}>
         {state => (
           <MenuWrap state={state}>
             <MenuList>

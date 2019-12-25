@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import Menu from './components/Menu';
 
 const App: React.FC = () => {
-  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
-
   return (
     <Router>
       <GlobalStyle />
@@ -14,7 +12,7 @@ const App: React.FC = () => {
         <Logo to="/">
           <img src={`${process.env.PUBLIC_URL}/img/watarium_logo.gif`} alt="ロゴ" />
         </Logo>
-        <Menu isOpen={isOpenMenu} onSwitch={() => setIsOpenMenu(!isOpenMenu)} />
+        <Menu />
         <PageName>展示一覧</PageName>
       </Header>
     </Router>
