@@ -3,6 +3,34 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import Menu from './components/Menu';
+import CurrentName from './components/CurrentName';
+
+export type Labels = 'スケジュール' | '展覧会' | 'メンバーシップ' | 'ワタリウム美術館について';
+export type Urls = 'schedule' | 'exhibitions' | 'membership' | 'about';
+
+interface LinkItem {
+  label: Labels;
+  url: Urls;
+}
+
+export const links: LinkItem[] = [
+  {
+    label: 'スケジュール',
+    url: 'schedule'
+  },
+  {
+    label: '展覧会',
+    url: 'exhibitions'
+  },
+  {
+    label: 'メンバーシップ',
+    url: 'membership'
+  },
+  {
+    label: 'ワタリウム美術館について',
+    url: 'about'
+  }
+];
 
 const App: React.FC = () => {
   return (
@@ -13,11 +41,11 @@ const App: React.FC = () => {
           <img src={`${process.env.PUBLIC_URL}/img/watarium_logo.gif`} alt="ロゴ" />
         </Logo>
         <Menu />
-        <PageName>展示一覧</PageName>
+        <CurrentName />
       </Header>
     </Router>
   );
-}
+};
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
@@ -55,12 +83,5 @@ const Logo = styled(Link)`
   z-index: 1000;
   height: 55px;
 `;
-
-const PageName = styled.h3`
-  font-size: 15px;
-  color: #707070;
-  display: flex;
-  align-items: flex-start;
-`
 
 export default App;

@@ -3,32 +3,9 @@ import styled, { css } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import { TransitionStatus } from 'react-transition-group/Transition';
 import { Link, useLocation } from 'react-router-dom';
+import { links } from '../App';
 
 const TRANSITION_DURATION = 300;
-
-interface LinkItem {
-  label: string;
-  url: string;
-}
-
-const links: LinkItem[] = [
-  {
-    label: 'スケジュール',
-    url: 'schedule'
-  },
-  {
-    label: '展覧会',
-    url: 'exhibitions'
-  },
-  {
-    label: 'メンバーシップ',
-    url: 'membership'
-  },
-  {
-    label: 'ワタリウム美術館について',
-    url: 'about'
-  }
-];
 
 const useMenu = (): [boolean, (state: boolean) => void] => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
