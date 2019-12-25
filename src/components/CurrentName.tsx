@@ -40,8 +40,10 @@ const CurrentName = () => {
 };
 
 const PageName = styled.h3`
+  display: inline-block;
   font-size: 15px;
   color: #707070;
+  height: 16px;
 `;
 
 export default CurrentName;
