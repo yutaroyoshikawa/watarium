@@ -1,23 +1,22 @@
 import React from 'react';
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
 const App: React.FC = () => {
   return (
-    <div>
+    <>
+      <GlobalStyle />
       <header>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <figure>
+          <img src={`${process.env.PUBLIC_URL}/img/watarium_logo.gif`} alt="ロゴ" />
+        </figure>
       </header>
-    </div>
+    </>
   );
 }
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+`;
 
 export default App;
