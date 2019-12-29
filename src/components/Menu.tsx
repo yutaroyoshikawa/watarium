@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { CSSTransition } from 'react-transition-group';
-import { TransitionStatus } from 'react-transition-group/Transition';
-import { Link, useLocation } from 'react-router-dom';
-import { links } from '../App';
-
-const TRANSITION_DURATION = 300;
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
+import { Transition } from "react-transition-group";
+import { Link, useLocation } from "react-router-dom";
+import { links, TRANSITION_DURATION, TransitionProp } from "../App";
 
 const useMenu = (): [boolean, (state: boolean) => void] => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -25,30 +22,26 @@ const Menu: React.FC = () => {
   return (
     <>
       <IconBars onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
-      <CSSTransition in={isOpen} timeout={TRANSITION_DURATION}>
+      <Transition
+        in={isOpen}
+        timeout={TRANSITION_DURATION}
+        unmountOnExit={true}
+      >
         {state => (
-          <MenuWrap state={state}>
+          <MenuWrap transitionStatus={state} duration={TRANSITION_DURATION}>
             <MenuList>
-              {
-                links.map(item => (
-                  <MenuItem key={item.url}>
-                    <Link to={`/${item.url}`}>
-                      {item.label}
-                    </Link>
-                  </MenuItem>
-                ))
-              }
+              {links.map(item => (
+                <MenuItem key={item.url}>
+                  <Link to={`/${item.url}`}>{item.label}</Link>
+                </MenuItem>
+              ))}
             </MenuList>
           </MenuWrap>
         )}
-      </CSSTransition>
+      </Transition>
     </>
-  )
+  );
 };
-
-interface MenuWrap {
-  state: TransitionStatus
-}
 
 const MenuWrap = styled.div`
   position: fixed;
@@ -62,26 +55,26 @@ const MenuWrap = styled.div`
   z-index: 999;
   background-color: #fff;
 
-  ${(props: MenuWrap) => {
-    switch (props.state) {
-      case 'entering':
+  ${(props: TransitionProp) => {
+    switch (props.transitionStatus) {
+      case "entering":
         return css`
           opacity: 0;
-        `
-      case 'entered':
+        `;
+      case "entered":
         return css`
           opacity: 1;
-          transition: opacity ${TRANSITION_DURATION}ms ease;
-        `
-      case 'exiting':
+          transition: opacity ${props.duration}ms ease;
+        `;
+      case "exited":
         return css`
           opacity: 1;
-        `
-      case 'exited':
+        `;
+      case "exiting":
         return css`
           opacity: 0;
-          transition: opacity ${TRANSITION_DURATION}ms ease;
-        `
+          transition: opacity ${props.duration}ms ease;
+        `;
     }
   }}
 `;
@@ -100,12 +93,12 @@ const MenuItem = styled.li`
 `;
 
 const bar = css`
-  content: '';
+  content: "";
   display: block;
   height: 2px;
   background-color: #707070;
   transform-origin: center left;
-  transition: width .2s ease-out, transform .2s ease-out;
+  transition: width 0.2s ease-out, transform 0.2s ease-out;
 `;
 
 interface Bars {
@@ -126,14 +119,14 @@ const IconBars = styled.div`
 
   &::before {
     ${bar}
-    transform: ${(props: Bars) => props.isOpen && 'rotate(20deg)'};
+    transform: ${(props: Bars) => props.isOpen && "rotate(20deg)"};
     width: 58px;
   }
 
   &::after {
     ${bar}
-    width: ${(props: Bars) => props.isOpen ? '58px' : '35px'};
-    transform: ${(props: Bars) => props.isOpen && 'rotate(-20deg)'};
+    width: ${(props: Bars) => (props.isOpen ? "58px" : "35px")};
+    transform: ${(props: Bars) => props.isOpen && "rotate(-20deg)"};
   }
 
   &:hover {
