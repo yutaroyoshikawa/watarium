@@ -111,11 +111,17 @@ const useQuery = () => {
 
 const useRequestForm = (): boolean => {
   const query = useQuery();
+  const isOpen = query.get("form");
   const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
 
   useEffect(() => {
-    query.get("form") && setIsOpenForm(true);
-  }, [query]);
+    if (isOpen === "true") {
+      setIsOpenForm(true);
+    }
+    if (isOpen === null) {
+      setIsOpenForm(false);
+    }
+  }, [isOpen]);
 
   return isOpenForm;
 };
