@@ -123,7 +123,7 @@ const App: React.FC = () => {
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
   ${reset}
-  h1, h2, h3, p, a, address, button, li, span, label, dd, dl, dt {
+  h1, h2, h3, p, a, address, button, li, span, label, dd, dl, dt, time {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 18px;
   }
