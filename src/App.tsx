@@ -14,13 +14,15 @@ import Menu from "./components/Menu";
 import CurrentName from "./components/CurrentName";
 import About from "./pages/About";
 import Membership from "./pages/Membership";
+import Home from "./pages/Home";
 
 export type Labels =
   | "スケジュール"
   | "展覧会"
   | "メンバーシップ"
-  | "ワタリウム美術館について";
-export type Urls = "schedule" | "exhibitions" | "membership" | "about";
+  | "ワタリウム美術館について"
+  | "トップ";
+export type Urls = "schedule" | "exhibitions" | "membership" | "about" | "";
 
 export interface TransitionProp {
   transitionStatus: TransitionStatus;
@@ -38,6 +40,10 @@ interface PageItem {
 }
 
 export const links: LinkItem[] = [
+  {
+    label: "トップ",
+    url: ""
+  },
   {
     label: "スケジュール",
     url: "schedule"
@@ -64,6 +70,10 @@ const pages: PageItem[] = [
   {
     url: "membership",
     component: Membership
+  },
+  {
+    url: "",
+    component: Home
   }
 ];
 
