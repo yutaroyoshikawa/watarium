@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { Transition } from "react-transition-group";
 import { Link, useLocation } from "react-router-dom";
 import { links, TRANSITION_DURATION, TransitionProp } from "../App";
@@ -24,10 +24,10 @@ const MenuWrap: React.FC<MenuWrapProps> = props => {
   return (
     <Wrap transitionStatus={props.transitionStatus} duration={props.duration}>
       <MenuList>
-        {links.map(
-          item =>
-            `/${item.url}` !== currentName && (
-              <MenuItem key={item.url}>
+        {links.filter(link => `/${link.url}` !== currentName).map(
+          (item, index) =>
+            (
+              <MenuItem key={item.url} itemIndex={index}>
                 <Link to={`/${item.url}`}>{item.label}</Link>
               </MenuItem>
             )
@@ -108,9 +108,27 @@ const MenuList = styled.ul`
   margin-right: 204px;
 `;
 
+interface MenuItem {
+  itemIndex: number;
+}
+
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
 const MenuItem = styled.li`
   font-size: 20px;
   color: #707070;
+  opacity: 0;
+  animation: ${slideIn} 500ms ease 1 forwards;
+  animation-delay: ${(props: MenuItem) => `${props.itemIndex * 100 + TRANSITION_DURATION}ms`};
 
   &:not(:last-child) {
     margin-bottom: 80px;
