@@ -1,35 +1,127 @@
-import React from 'react';
-import styled from 'styled-components';
-import { TransitionProp } from '../App';
+import React, { useState, useEffect } from "react";
+import styled, { css, keyframes } from "styled-components";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { TransitionProp, exhibitions } from "../App";
+import moment from "moment";
 
-interface Prop extends TransitionProp {};
+interface Prop extends TransitionProp {}
 
-const Home: React.FC<Prop> = prop => {
+const TRANSITION_DURATION = 4000;
+
+const useSlideshow = (): [number, (index: number) => void] => {
+  const [index, setIndex] = useState<number>(0);
+  let timeout: number | undefined = undefined;
+
+  const createTimeout = () => {
+    timeout = window.setTimeout(() => {
+      index < exhibitions.length - 1 ? setIndex(index + 1) : setIndex(0);
+    }, TRANSITION_DURATION);
+  };
+
+  const removeTimeout = () => {
+    window.clearTimeout(timeout);
+    timeout = undefined;
+  };
+
+  useEffect(() => {
+    if (timeout !== undefined) {
+      removeTimeout();
+    }
+    createTimeout();
+
+    return () => {
+      removeTimeout();
+    };
+    // eslint-disable-next-line
+  }, [index]);
+
+  return [index, setIndex];
+};
+
+const Home: React.FC<Prop> = props => {
+  const [index, setIndex] = useSlideshow();
+
   return (
-    <Wrap>
-      <InfoCard>
-        <Info>
-          <Title>
-            フィリップパレーノ展
-            <SubTitle>オブジェが語り始めること</SubTitle>
-          </Title>
-          <Date>2019 / 11 / 2 (土) - 2020 / 3 / 22 (日)</Date>
-        </Info>
-        <ArrowWrap>
-          <Arrow data={`${process.env.PUBLIC_URL}/img/arrow.svg`} type="image/svg+xml" />
-        </ArrowWrap>
-      </InfoCard>
-      <Sumbnail src={`${process.env.PUBLIC_URL}/img/sample.jpg`} alt="フィリップパレーノ展" />
-      <NavWrapper>
-        <NavItem />
-      </NavWrapper>
+    <Wrap transitionStatus={props.transitionStatus} duration={props.duration}>
+      <CSSTransition
+        key={exhibitions[index].id}
+        timeout={props.duration}
+        unmountOnExit={true}
+      >
+        {status => (
+          <SumbnailWrapper
+            transitionStatus={status}
+            duration={props.duration}
+            key={exhibitions[index].id}
+          >
+            <Sumbnail
+              src={exhibitions[index].sumbnail}
+              alt={exhibitions[index].title}
+            />
+            <NavWrapper>
+              {exhibitions.map((_, itemIndex) => (
+                <NavItem
+                  isSelected={index === itemIndex}
+                  onClick={() => setIndex(itemIndex)}
+                />
+              ))}
+            </NavWrapper>
+            <InfoCard transitionStatus={status} duration={props.duration}>
+              <Info>
+                <Title>
+                  {exhibitions[index].title}
+                  <SubTitle>{exhibitions[index].subtitle}</SubTitle>
+                </Title>
+                <Date>
+                  {moment(exhibitions[index].start).format(
+                    "YYYY / MM / DD (ddd)"
+                  )}{" "}
+                  -{" "}
+                  {moment(exhibitions[index].finish).format(
+                    "YYYY / MM / DD (ddd)"
+                  )}
+                </Date>
+              </Info>
+              <ArrowWrap>
+                <Arrow
+                  data={`${process.env.PUBLIC_URL}/img/arrow.svg`}
+                  type="image/svg+xml"
+                />
+              </ArrowWrap>
+            </InfoCard>
+          </SumbnailWrapper>
+        )}
+      </CSSTransition>
     </Wrap>
   );
 };
 
-const Wrap = styled.article`
+const Wrap = styled(TransitionGroup)`
   width: 100%;
   height: 100vh;
+
+  ${(props: TransitionProp) => {
+    switch (props.transitionStatus) {
+      case "entering":
+        return css`
+          opacity: 0;
+        `;
+      case "entered":
+        return css`
+          opacity: 1;
+          transition: opacity ${props.duration}ms ease;
+        `;
+      case "exited":
+        return css`
+          opacity: 1;
+        `;
+      case "exiting":
+        return css`
+          opacity: 0;
+          transition: opacity ${props.duration}ms ease;
+        `;
+    }
+  }}
 `;
 
 const Info = styled.div`
@@ -46,16 +138,16 @@ const ArrowWrap = styled.figure`
 
 const Sumbnail = styled.img`
   height: 100vh;
-  width: calc(100% - 30vw);
+  width: 70vw;
   object-fit: cover;
   position: absolute;
-  right: 0;
   z-index: 1;
   cursor: pointer;
-  transition: box-shadow 300ms ease;
+  transition: all 300ms ease;
 
   &:hover {
     box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+    filter: brightness(110%);
   }
 `;
 
@@ -64,16 +156,39 @@ const InfoCard = styled.div`
   height: 245px;
   padding: 50px;
   box-sizing: border-box;
-  box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
   position: absolute;
   z-index: 2;
   bottom: 23vh;
+  transform: translateX(-33vw);
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   background-color: #fff;
   cursor: pointer;
   transition: box-shadow 300ms ease;
+
+  ${(props: TransitionProp) => {
+    switch (props.transitionStatus) {
+      case "entering":
+        return css`
+          box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+        `;
+      case "entered":
+        return css`
+          box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+        `;
+      case "exited":
+        return css`
+          box-shadow: none;
+          transition: none;
+        `;
+      case "exiting":
+        return css`
+          box-shadow: none;
+          transition: none;
+        `;
+    }
+  }}
 
   &:hover ${ArrowWrap} {
     transform: translateX(10px);
@@ -88,14 +203,89 @@ const InfoCard = styled.div`
   }
 `;
 
+const NavItem = styled.div`
+  width: 23px;
+  height: 23px;
+  border: solid 3px #fff;
+  border-radius: 50%;
+  transition: background-color 300ms ease;
+
+  &:not(:last-child) {
+    margin-right: 30px;
+  }
+
+  ${(props: NavItem) =>
+    props.isSelected
+      ? css`
+          background-color: #000;
+        `
+      : css`
+          cursor: pointer;
+          background-color: #fff;
+          &:hover {
+            background-color: #a0a0a0;
+          }
+        `}
+`;
+
+const SumbnailWrapper = styled.div`
+  height: 100vh;
+  width: calc(100% - 30vw);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+
+  ${(props: TransitionProp) => {
+    switch (props.transitionStatus) {
+      case "entering":
+        return css``;
+      case "entered":
+        return css``;
+      case "exited":
+        return css`
+          opacity: 1;
+        `;
+      case "exiting":
+        return css`
+          opacity: 0;
+          transition: opacity ${props.duration}ms ease;
+        `;
+    }
+  }}
+
+  &:hover ${InfoCard} {
+    box-shadow: -2px 2px 10px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  &:hover ${ArrowWrap} {
+    transform: translateX(10px);
+  }
+`;
+
 const Arrow = styled.object`
   width: 100%;
   fill: #a0a0a0;
 `;
 
+const slideIn = keyframes`
+from {
+  transform: translateY(15px);
+  opacity: 0;
+}
+to {
+  transform: translateY(0);
+  opacity: 1;
+}
+`;
+
 const Title = styled.h2`
   font-size: 28px;
   color: #707070;
+  opacity: 0;
+  animation: ${slideIn} 500ms ease 1 forwards;
 `;
 
 const SubTitle = styled.span`
@@ -103,24 +293,27 @@ const SubTitle = styled.span`
   color: #707070;
   display: block;
   margin-top: 10px;
+  opacity: 0;
+  animation: ${slideIn} 500ms ease 1 forwards;
 `;
 
 const Date = styled.time`
   font-size: 20px;
   color: #707070;
+  opacity: 0;
+  animation: ${slideIn} 500ms ease 1 forwards;
+  animation-delay: 200ms;
 `;
 
 const NavWrapper = styled.div`
-  position: absolute;
+  position: relative;
   bottom: 158px;
+  z-index: 3;
+  display: flex;
 `;
 
-const NavItem = styled.div`
-  width: 23px;
-  height: 23px;
-  border: solid 3px #fff;
-  border-radius: 50%;
-  background-color: #fff;
-`;
+interface NavItem {
+  isSelected: boolean;
+}
 
 export default Home;
