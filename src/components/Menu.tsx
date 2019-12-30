@@ -4,6 +4,39 @@ import { Transition } from "react-transition-group";
 import { Link, useLocation } from "react-router-dom";
 import { links, TRANSITION_DURATION, TransitionProp } from "../App";
 
+const useMenuWrap = (): string => {
+  const [currentName, setCurrentName] = useState<string>("");
+  const location = useLocation();
+
+  useEffect(() => {
+    setCurrentName(location.pathname);
+    // eslint-disable-next-line
+  }, []);
+
+  return currentName;
+};
+
+interface MenuWrapProps extends TransitionProp {}
+
+const MenuWrap: React.FC<MenuWrapProps> = props => {
+  const currentName = useMenuWrap();
+
+  return (
+    <Wrap transitionStatus={props.transitionStatus} duration={props.duration}>
+      <MenuList>
+        {links.map(
+          item =>
+            `/${item.url}` !== currentName && (
+              <MenuItem key={item.url}>
+                <Link to={`/${item.url}`}>{item.label}</Link>
+              </MenuItem>
+            )
+        )}
+      </MenuList>
+    </Wrap>
+  );
+};
+
 const useMenu = (): [boolean, (state: boolean) => void] => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const location = useLocation();
@@ -28,22 +61,14 @@ const Menu: React.FC = () => {
         unmountOnExit={true}
       >
         {state => (
-          <MenuWrap transitionStatus={state} duration={TRANSITION_DURATION}>
-            <MenuList>
-              {links.map(item => (
-                <MenuItem key={item.url}>
-                  <Link to={`/${item.url}`}>{item.label}</Link>
-                </MenuItem>
-              ))}
-            </MenuList>
-          </MenuWrap>
+          <MenuWrap transitionStatus={state} duration={TRANSITION_DURATION} />
         )}
       </Transition>
     </>
   );
 };
 
-const MenuWrap = styled.div`
+const Wrap = styled.div`
   position: fixed;
   display: flex;
   justify-content: flex-end;
