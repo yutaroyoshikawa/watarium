@@ -175,14 +175,14 @@ const Membership: React.FC = () => {
       </BenefitsTab>
       <BenefitItemsWrapper>
         {
-          benefits.map(item => (
+          benefits.map((item, index) => (
             <CSSTransition
-              key={item.id}
+              key={uuid()}
               timeout={TRANSITION_DURATION}
             >
               {
                 status => (
-                  <BenefitItem transitionStatus={status} duration={TRANSITION_DURATION}>
+                  <BenefitItem transitionStatus={status} duration={TRANSITION_DURATION} itemIndex={index - 1}>
                     {item.label}
                   </BenefitItem>
                 )
@@ -308,6 +308,10 @@ const BenefitItemsWrapper = styled(TransitionGroup)`
   grid-gap: 68px;
 `;
 
+interface BenefitItemProp extends TransitionProp {
+  itemIndex: number;
+}
+
 const BenefitItem = styled.li`
   width: 150px;
   height: 150px;
@@ -321,7 +325,7 @@ const BenefitItem = styled.li`
   display: flex;
   align-items: center;
 
-  ${(props: TransitionProp) => {
+  ${(props: BenefitItemProp) => {
     switch (props.transitionStatus) {
       case 'entering':
         return css`
@@ -333,17 +337,17 @@ const BenefitItem = styled.li`
           opacity: 1;
           transform: translateY(0);
           transition: all ${props.duration}ms ease;
+          transition-delay: ${props.itemIndex * 50}ms;
         `
       case 'exited':
         return css`
           opacity: 1;
-          transform: translateY(0);
+          transform: translateY(-100%);
       `
       case 'exiting':
         return css`
           opacity: 0;
-          transform: translateY(20px);
-          transition: all ${props.duration}ms ease;
+          transform: translateY(-100%);
         `
     }
   }}
