@@ -1,9 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { Link } from "react-router-dom";
+import moment from "moment";
 import styled, { css } from "styled-components";
+import { exhibitions, schedules, PostData, TRANSITION_DURATION, TransitionProp } from "../App";
 
-const Calendar: React.FC = () => {
+const today = moment();
+
+const days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+interface Props {
+  type: "exhibitions" | "schedule";
+}
+
+const Calendar: React.FC<Props> = props => {
   const daysSelectorRef = useRef<HTMLDivElement>(null);
-  const [selectedDay, setSelectedDay] = useState<number>(1);
+  const [selectedDay, setSelectedDay] = useState<number>(today.date());
+  const [selectedMonth] = useState<number>(today.month() + 1);
+
+  useEffect(() => {
+    if (daysSelectorRef.current) {
+      daysSelectorRef.current.scrollTo({
+        behavior: "smooth",
+        left: daysSelectorRef.current.clientWidth * (selectedDay / 7)
+      });
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const onSelectDay = (e: React.MouseEvent<HTMLDivElement>, day: number) => {
     e.currentTarget.scrollIntoView({
@@ -39,9 +62,28 @@ const Calendar: React.FC = () => {
     }
   };
 
+  const filterItems = (): PostData[] => {
+    const selectedDate = moment(`2019/${selectedMonth}/${selectedDay}`);
+
+    switch (props.type) {
+      case "exhibitions":
+        return exhibitions.filter(
+          post =>
+            moment(selectedDate).isAfter(post.start) &&
+            moment(selectedDate).isBefore(post.finish)
+        );
+      case "schedule":
+        return schedules.filter(
+          post =>
+            moment(selectedDate).isAfter(post.start) &&
+            moment(selectedDate).isBefore(post.finish)
+        );
+    }
+  };
+
   return (
     <Wrapper>
-      <Month>12月</Month>
+      <Month>{selectedMonth}月</Month>
       <DateSelectorWrap>
         <PreviusWeek onClick={onClickPrevius}>
           <PreviusArrow
@@ -50,14 +92,14 @@ const Calendar: React.FC = () => {
           />
         </PreviusWeek>
         <DaysWrap ref={daysSelectorRef}>
-          {[...Array(31)].map((_, index) => (
-            <Date
+          {[...Array(days[selectedMonth - 1])].map((_, index) => (
+            <DateTime
               key={index}
               onClick={e => onSelectDay(e, index + 1)}
               isSelected={index + 1 === selectedDay}
             >
               {index + 1}
-            </Date>
+            </DateTime>
           ))}
         </DaysWrap>
         <NextWeek onClick={onClickNext}>
@@ -68,24 +110,36 @@ const Calendar: React.FC = () => {
         </NextWeek>
       </DateSelectorWrap>
       <ArticlesWrap>
-        <ArticleItem>
-          <ArticleName>
-            小沢朝江　庭園倶楽部「数寄屋造りに学ぶ　数寄の空間学」
-          </ArticleName>
-          <ArticleTime>19:00-21:00</ArticleTime>
-        </ArticleItem>
-        <ArticleItem>
-          <ArticleName>
-            小沢朝江　庭園倶楽部「数寄屋造りに学ぶ　数寄の空間学」
-          </ArticleName>
-          {/* <ArticleTime>19:00-21:00</ArticleTime> */}
-        </ArticleItem>
-        <ArticleItem>
-          <ArticleName>
-            小沢朝江　庭園倶楽部「数寄屋造りに学ぶ　数寄の空間学」
-          </ArticleName>
-          <ArticleTime>19:00-21:00</ArticleTime>
-        </ArticleItem>
+        <TransitionGroup>
+          {filterItems().map(item => (
+            <CSSTransition
+              key={item.id}
+              timeout={TRANSITION_DURATION}
+              unmountOnExit={true}
+            >
+              {status => (
+                <ArticleItem
+                  to={`/${props.type}?name=${item.title}${
+                    item.subtitle ? item.subtitle : ""
+                  }`}
+                  transitionStatus={status}
+                  duration={TRANSITION_DURATION}
+                >
+                  <ArticleName>
+                    {item.title}
+                    {item.subtitle}
+                  </ArticleName>
+                  {props.type === "schedule" && (
+                    <ArticleTime>
+                      {moment(item.start).format("hh:mm")} -{" "}
+                      {moment(item.finish).format("hh:mm")}
+                    </ArticleTime>
+                  )}
+                </ArticleItem>
+              )}
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
       </ArticlesWrap>
     </Wrapper>
   );
@@ -132,16 +186,15 @@ const DaysWrap = styled.div`
   }
 `;
 
-interface DateProp {
+interface DateTimeProp {
   isSelected: boolean;
 }
 
-const Date = styled.div`
-  cursor: pointer;
+const DateTime = styled.div`
   transition: all 300ms ease;
   font-size: 17px;
 
-  ${(props: DateProp) =>
+  ${(props: DateTimeProp) =>
     props.isSelected
       ? css`
           color: #707070;
@@ -150,6 +203,7 @@ const Date = styled.div`
       : css`
           color: #a0a0a0;
           transform: scale(1);
+          cursor: pointer;
           &:hover {
             color: #808080;
             transform: scale(1.5);
@@ -195,8 +249,42 @@ const ArticlesWrap = styled.dl`
   width: 100%;
 `;
 
-const ArticleItem = styled.div`
+const ArticleName = styled.dd`
+  font-size: 18px;
+  color: #707070;
+`;
+
+const ArticleTime = styled.dt`
+  font-size: 14px;
+  margin-top: 10px;
+  color: #a0a0a0;
+`;
+
+const ArticleItem = styled(Link)`
   box-sizing: border-box;
+
+  ${(props: TransitionProp) => {
+    switch (props.transitionStatus) {
+      case 'entering':
+        return css`
+          opacity: 0;
+        `
+      case 'entered':
+        return css`
+          opacity: 1;
+          transition: opacity ${props.duration}ms ease;
+        `
+      case 'exited':
+        return css`
+          opacity: 1;
+        `
+      case 'exiting':
+        return css`
+          opacity: 0;
+          transition: opacity ${props.duration}ms ease;
+        `
+    }
+  }}
 
   &:first-child {
     padding-bottom: 30px;
@@ -213,15 +301,8 @@ const ArticleItem = styled.div`
   &:not(:last-child) {
     border-bottom: solid 1px #e0e0e0;
   }
-`;
 
-const ArticleName = styled.dd`
-  font-size: 18px;
-  color: #707070;
-`;
-
-const ArticleTime = styled.dt`
-  font-size: 14px;
-  margin-top: 10px;
-  color: #a0a0a0;
+  &:hover ${ArticleName}, ${ArticleTime} {
+    color: #404040;
+  }
 `;

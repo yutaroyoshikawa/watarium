@@ -1,33 +1,99 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import styled, { keyframes, css } from "styled-components";
 import Calendar from "../components/Calendar";
-import { TransitionProp } from "../App";
+import { TransitionProp, exhibitions } from "../App";
+import moment from "moment";
 
-interface Props extends TransitionProp {};
+interface Props extends TransitionProp {}
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
+const useEchibition = (): number | null => {
+  const query = useQuery();
+  const exhibitionName = query.get("name");
+  const [index, setIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const filteredIndex = exhibitions.findIndex(
+      exhibition =>
+        `${exhibition.title}${
+          exhibition.subtitle ? exhibition.subtitle : ""
+        }` === exhibitionName
+    );
+    filteredIndex !== -1 ? setIndex(filteredIndex) : setIndex(null);
+  }, [exhibitionName]);
+
+  return index;
+};
 
 const Exhibitions: React.FC<Props> = props => {
+  const exhibitionIndex = useEchibition();
+  const latestExhibition = exhibitions.sort((a, b) =>
+    a.start > b.start ? -1 : 1
+  )[0];
+
   return (
     <>
-      <Calendar />
-      <Wrap>
-        <SumbnailWrap>
-          <Sumbnail src={`${process.env.PUBLIC_URL}/img/sample.jpg`} alt="sample" />
-          <InfoCard>
-            <Title>
-            フィリップ・パレーノ展
-            <SubTitle>
-              オブジェが語り始めること
-            </SubTitle>
-            </Title>
-            <Date>2019 / 11 / 2 (土) - 2020 / 3 / 22 (日)</Date>
-          </InfoCard>
-        </SumbnailWrap>
-        <ExhibitionContent>
-        同時代の重要なアーティストの一人、フィリップ・パレーノの日本初となる大掛かりな展覧会です。パレーノの特徴は、映像、彫刻、ドローイング、テキストなど多様な手法を用い、展覧会を一貫したひとつのメディアとして捉えていることです。つまり展覧会は一連の出来事が展開する空間であり、個々の作品の意味ではなく、「オブジェクト」として展覧会の可能性を探っていくと、展覧会はオープンスペースとなり、時に応じて変化するフォーマットとなります。展覧会に訪れることが、空間的・時間的境界や感覚的経験を伴う唯一無二の体験となることを目指しているのです。本展では、パレーノの代表作である白熱光が点滅する「マーキー」や、天井に張りつく風船「吹き出し」のほか、1995年にワタリウム美術館と伝説のキュレター、ヤン・フートがコラボレートした展覧会「水の波紋展」で制作した氷の「雪だるま」がその姿を新しくし登場します。無色透明なこれらの作品を通し、パレーノが見ている近未来の風景が広がるのでしょうか。最先端でありながら懐かしい、現れては消える不思議なパレーノワールドです。A key artist of his generation, Philippe Parreno has radically redefined the exhibition experience by taking it as a medium, placing its construction at the heart of his process. Working in a diverse range of media including film, sculpture, drawing, and text, Parreno conceives his exhibitions as a scripted space where a series of events unfold. He seeks to transform the exhibition visit into a singular experience that plays with spatial and temporal boundaries and the sensory experience of the visitor. For the artist, the exhibition is less a total work of art than a necessary interdependence that offers an ongoing series of open possibilities.In this exhibition, you may encount his masterpieces including Marquee made of lightbulbs and neons flickering, and Speech Bubbles which is balloon work stuck to a ceiling. And also Ice Man exhibited in Ripples across the Water in 1995, a exhibition by WATARI-UM collaborated with a legendary curator Jan Hoet, shall get renewed and reappear. Through these colorless and transparent works, we may witness a neo-futuristic landscape in Parreno’s eyes. This is a cutting-edge but also nostalgic, mysterious world of Parreno, which is here today and gone tomorrow.この展覧会は、1994年から2006年にかけて制作された作品-オブジェのプレゼンテーション、あるいは再構成である。タイトルはこれらの作品がつくられた年代を重ね合わせている。1994年の《しゃべる石》からスタートし、1995年、ワタリウム美術館により企画され、ヤン・フートがキュレーションした「水の波紋」展のために制作された《リアリティー・パークの雪だるま》、そして2007年に発表された最初の《マーキー》まで。これらの年代が過度に露出することで、このモチーフが誕生した。このモチーフにより、タイトルに「語る」という言葉が与えられた。ここに筋書きはない。そして始まりも終わりもない。ここで、オブジェたちは互いに会話しはじめる。それぞれのオブジェ同士には関係がある。カメラを通して、ワタリウム美術館周辺の気圧や風の方向などの細かな出来事にも 反応する。すべては空気の変化や換気に反応している。 オブジェたちは一緒になって、ここの状況をつくっていく。今、2019年11月1日から、一連の語りが完了する2020年3月22日まで。
-        </ExhibitionContent>
-      </Wrap>
+      <Calendar type="exhibitions" />
+      {exhibitionIndex !== null ? (
+        <Wrap
+          transitionStatus={props.transitionStatus}
+          duration={props.duration}
+        >
+          <SumbnailWrap>
+            <Sumbnail
+              src={exhibitions[exhibitionIndex].sumbnail}
+              alt={`${exhibitions[exhibitionIndex].title}${exhibitions[exhibitionIndex].subtitle}`}
+            />
+            <InfoCard>
+              <Title>
+                {exhibitions[exhibitionIndex].title}
+                <SubTitle>{exhibitions[exhibitionIndex].subtitle}</SubTitle>
+              </Title>
+              <Date>
+                {moment(exhibitions[exhibitionIndex].start).format(
+                  "YYYY / MM / DD (dd)"
+                )}{" "}
+                -{" "}
+                {moment(exhibitions[exhibitionIndex].finish).format(
+                  "YYYY / MM / DD (dd)"
+                )}
+              </Date>
+            </InfoCard>
+          </SumbnailWrap>
+          <ExhibitionContent>
+            {exhibitions[exhibitionIndex].overview}
+          </ExhibitionContent>
+        </Wrap>
+      ) : (
+        <Wrap
+          transitionStatus={props.transitionStatus}
+          duration={props.duration}
+        >
+          <SumbnailWrap>
+            <Sumbnail
+              src={latestExhibition.sumbnail}
+              alt={`${latestExhibition.title}${latestExhibition.subtitle}`}
+            />
+            <InfoCard>
+              <Title>
+                {latestExhibition.title}
+                <SubTitle>{latestExhibition.subtitle}</SubTitle>
+              </Title>
+              <Date>
+                {moment(latestExhibition.start).format("YYYY / MM / DD (dd)")} -{" "}
+                {moment(latestExhibition.finish).format("YYYY / MM / DD (dd)")}
+              </Date>
+            </InfoCard>
+          </SumbnailWrap>
+          <ExhibitionContent>{latestExhibition.overview}</ExhibitionContent>
+        </Wrap>
+      )}
     </>
-  )
+  );
 };
 
 export default Exhibitions;
@@ -36,6 +102,29 @@ const Wrap = styled.div`
   padding: 218px 593px 218px 0;
   margin: 0 auto;
   box-sizing: border-box;
+
+  ${(props: TransitionProp) => {
+    switch (props.transitionStatus) {
+      case "entering":
+        return css`
+          opacity: 0;
+        `;
+      case "entered":
+        return css`
+          opacity: 1;
+          transition: opacity ${props.duration}ms ease;
+        `;
+      case "exited":
+        return css`
+          opacity: 1;
+        `;
+      case "exiting":
+        return css`
+          opacity: 0;
+          transition: opacity ${props.duration}ms ease;
+        `;
+    }
+  }}
 `;
 
 const SumbnailWrap = styled.div`
@@ -58,7 +147,6 @@ const InfoCard = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   background-color: #fff;
-  cursor: pointer;
   box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
 `;
 
@@ -104,9 +192,9 @@ const Sumbnail = styled.img`
 `;
 
 const ExhibitionContent = styled.p`
-  width: 100%; 
+  width: 100%;
   font-size: 16px;
-  color: #9D9D9D;
+  color: #9d9d9d;
   line-height: 40px;
   padding: 0 80px 0 100px;
   text-align: justify;
