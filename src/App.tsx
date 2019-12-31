@@ -15,6 +15,8 @@ import CurrentName from "./components/CurrentName";
 import About from "./pages/About";
 import Membership from "./pages/Membership";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Exhibitions from './pages/Exhibitions';
 import uuid from "uuid";
 import moment from "moment";
 import "moment/locale/ja";
@@ -118,6 +120,10 @@ const pages: PageItem[] = [
   {
     url: "",
     component: Home
+  },
+  {
+    url: "exhibitions",
+    component: Exhibitions
   }
 ];
 
@@ -136,6 +142,9 @@ const PageSwicher: React.FC = () => {
                 <page.component transitionStatus={status} duration={TRANSITION_DURATION} />
               </Route>
             ))}
+            <Route path={"*"}>
+              <NotFound />
+            </Route>
           </Switch>
         )}
       </CSSTransition>
@@ -168,7 +177,7 @@ const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
   ${reset}
   h1, h2, h3, p, a, address, button, li, span, label, dd, dl, dt, time {
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Noto Sans JP', 'YuGo-Medium', sans-serif;
     font-size: 18px;
   }
   a {
