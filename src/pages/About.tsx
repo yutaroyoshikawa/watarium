@@ -63,6 +63,7 @@ const AboutContent = styled.p`
   color: #9D9D9D;
   line-height: 40px;
   margin: 161px 0;
+  text-align: justify;
 `;
 
 const GoogleMap = styled.iframe`

@@ -310,6 +310,7 @@ const NavWrapper = styled.div`
   bottom: 158px;
   z-index: 3;
   display: flex;
+  margin: 84px auto;
 `;
 
 interface NavItem {
