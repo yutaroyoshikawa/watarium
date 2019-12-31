@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { TransitionProp, exhibitions } from "../App";
@@ -66,7 +67,13 @@ const Home: React.FC<Prop> = props => {
                 />
               ))}
             </NavWrapper>
-            <InfoCard transitionStatus={status} duration={props.duration}>
+            <InfoCard
+              transitionStatus={status}
+              duration={props.duration}
+              to={`/exhibitions?name=${exhibitions[index].title}${
+                exhibitions[index].subtitle ? exhibitions[index].subtitle : ""
+              }`}
+            >
               <Info>
                 <Title>
                   {exhibitions[index].title}
@@ -151,7 +158,7 @@ const Sumbnail = styled.img`
   }
 `;
 
-const InfoCard = styled.div`
+const InfoCard = styled(Link)`
   width: 749px;
   height: 245px;
   padding: 50px;
@@ -268,6 +275,7 @@ const SumbnailWrapper = styled.div`
 const Arrow = styled.object`
   width: 100%;
   fill: #a0a0a0;
+  pointer-events: none;
 `;
 
 const slideIn = keyframes`
