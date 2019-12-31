@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Link,
@@ -47,17 +47,17 @@ interface PageItem {
   component: React.FC<any>;
 }
 
-interface Exhibition {
+export interface PostData {
   id: string;
   title: string;
   subtitle?: string;
   sumbnail: string;
+  overview: string;
   start: Date;
   finish: Date;
-  overview: string;
 }
 
-export const exhibitions: Exhibition[] = [
+export const exhibitions: PostData[] = [
   {
     id: uuid(),
     title: "フィリップパレーノ展",
@@ -86,6 +86,19 @@ export const exhibitions: Exhibition[] = [
     finish: new Date("2019/7/7"),
     overview:
       "80年代初め、オフビートな映像と音楽で注目を集めた「ストレンジャー・ザン・パラダイス」（1984年、監督：ジム・ジャームッシュ）という映画をご存知だろうか。今回、ワタリウム美術館で展示するアーティスト、ジョン・ルーリー（1952年生まれ、U.S.A.）はこの映画の主役を演じた俳優である。NYの安アパートに住みギャンブルで生活を立てている冴えないがちょっとかっこいいウィリーという若者役で登場する。全編モノクロのこの映画はI LOVE NEW YORKキャンペーンで沸くNYの若者たちの日常の素顔を淡々と描いていた。ジョン・ルーリーはミュージシャンとしてこの映画の音楽も担当し、違和感のあるジャズが映像を一層印象深いものにしていた。役者として、さらには自身がフェイク・ジャズバンドと評したラウンジ・リザーズのメンバーとしても注目されることとなった。しかし1990年代後半、ジョン・ルーリーは「ライム病」という難病を患い、映画と音楽の世界から姿を消し、一人で、自由な時間にできる絵画制作に活動の場を移す。かつて、ジャン＝ミシェル・バスキアなどと一緒に描いていたというだけあって、その構図や技法は卓越している。ジョン・ルーリーの描く世界は一見美しい夢の中のように見えるが、一方で痛烈な皮肉が込められ、登場する動物たちも小さく弱々しいが、実はマイペースで自由な喜びをもっている。近年、ジョン・ルーリーは生活の大半をカリブ海の島に暮らし、一層、植物や動物などの自然が多く登場してきている。ワタリウム美術館での展覧会は2010年以来、今回が二度目の開催となる。近頃はアメリカもそして日本もさらに不条理なことが多くなり、そんないま、この展覧会でジョン・ルーリーの描く自由とアナーキーな世界に触れてほしいと願っている。"
+  }
+];
+
+export const schedules: PostData[] = [
+  {
+    id: uuid(),
+    title: "小沢朝江　庭園倶楽部",
+    subtitle: "「数寄屋造りに学ぶ　数寄の空間学」",
+    sumbnail: `${process.env.PUBLIC_URL}/img/img_6831.PNG`,
+    overview:
+      "観光立国のスローガンは、住んでよし・訪れてよしのまちづくりである。私たちが旅するのは、別に奇異な風景が目当てではない。ただ便利で機能的なビジネス都市の、それこそ工業製品で埋め尽くされた無機的で画一的な風景ではもちろんない。その土地を訪ねてこそ出会い、味合える”地域らしさ”が実感できる風景世界を求めてのことである。自然的歴史的風土の基盤の上に、その地をわがふるさととしてこよなく愛する人々の生活模様がくりひろげられ、その国、その地方、その地域、その場所の固有のランドスケープが私たちビジターに個性的で魅力的な風景体験を与えてくれるのである。2019年庭園倶楽部は、多様で多彩な世界のランドスケープ模様を覗いてみる。",
+    start: new Date("2019/6/1 19:00"),
+    finish: new Date("2020/2/29 21:00")
   }
 ];
 
@@ -139,6 +152,11 @@ export const TRANSITION_DURATION = 300;
 
 const PageSwicher: React.FC = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // eslint-disable-next-line
+  }, [location.pathname]);
 
   return (
     <TransitionGroup>
