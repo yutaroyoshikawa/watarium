@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { TransitionProp, TRANSITION_DURATION } from '../App';
+import ScrollSlideIn from '../components/ScrollSlideIn';
 
 interface Props extends TransitionProp {}
 
@@ -16,11 +17,13 @@ const About: React.FC<Props> = props => {
 また一方、ワタリウム美術館は、日本やアジアのアーティストについても密度の高いリサーチを行い、丹念な関係作りをしています。美術館が行う提案全体の中で、欠くことのできない部分を構成する可能性を、アーティストたちは与えられているのです。
 こうして、ワタリウム美術館は、世界のあらゆる土地の人が耳を傾ける、ひとつの声になりつつあります。いまを超えて、いつか日本がワタリウム美術館にさらなる感謝の言葉を贈る日がやって来ることでしょう。
       </AboutContent>
-      <Access>アクセス</Access>
-      <GoogleMap src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.2547244750767!2d139.71116941585285!3d35.67072943815407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188c98e859ff5d%3A0xb580c58783339d45!2z44Ov44K_44Oq44Km44Og576O6KGT6aSo!5e0!3m2!1sja!2sjp!4v1577334924990!5m2!1sja!2sjp" />
-      <Address>
-        〒150-0001 東京都渋谷区神宮前3-7-6
-      </Address>
+      <ScrollSlideIn>
+        <Access>アクセス</Access>
+        <GoogleMap src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.2547244750767!2d139.71116941585285!3d35.67072943815407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188c98e859ff5d%3A0xb580c58783339d45!2z44Ov44K_44Oq44Km44Og576O6KGT6aSo!5e0!3m2!1sja!2sjp!4v1577334924990!5m2!1sja!2sjp" />
+        <Address>
+          〒150-0001 東京都渋谷区神宮前3-7-6
+        </Address>
+      </ScrollSlideIn>
     </Wrapper>
   );
 };
