@@ -133,6 +133,26 @@ const MenuItem = styled.li`
   &:not(:last-child) {
     margin-bottom: 80px;
   }
+
+  &::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 3px;
+      border-radius: 3px;
+      background-color: #707070;
+      transform: translateY(10px);
+      margin-top: 5px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 300ms ease;
+    }
+
+  &:hover {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
 `;
 
 const bar = css`
