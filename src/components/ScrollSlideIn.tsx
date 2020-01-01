@@ -8,12 +8,10 @@ const ScrollSlideIn: React.FC = props => {
   useEffect(() => {
     const judgeIsVisible = () => {
       if (selfRef.current) {
-        const currentY = window.scrollY - (window.innerHeight / 1.7);
+        const currentY = window.scrollY - window.innerHeight / 1.7;
         const clientY = selfRef.current.clientTop;
-  
-        currentY > clientY
-          ? setIsVisible(true)
-          : setIsVisible(false);
+
+        currentY > clientY ? setIsVisible(true) : setIsVisible(false);
       }
     };
 
@@ -21,7 +19,7 @@ const ScrollSlideIn: React.FC = props => {
 
     return () => {
       window.removeEventListener("scroll", judgeIsVisible);
-    }
+    };
   }, []);
 
   return (
@@ -40,14 +38,14 @@ interface WrapProp {
 const Wrap = styled.div`
   transition: all 500ms ease;
 
-  ${(props: WrapProp) => props.isVisible
-    ? css`
-      opacity: 1;
-      transform: translateY(0);
-    `
-    : css`
-      opacity: 0;
-      transform: translateY(100px);
-    `
-  }
+  ${(props: WrapProp) =>
+    props.isVisible
+      ? css`
+          opacity: 1;
+          transform: translateY(0);
+        `
+      : css`
+          opacity: 0;
+          transform: translateY(100px);
+        `}
 `;

@@ -35,7 +35,11 @@ const Exhibitions: React.FC<Props> = props => {
 
   return (
     <>
-      <Calendar type="exhibitions" isActive={isActiveCalendar} onSwitch={setIsActiveCalender} />
+      <Calendar
+        type="exhibitions"
+        isActive={isActiveCalendar}
+        onSwitch={setIsActiveCalender}
+      />
       {exhibitionIndex !== null ? (
         <Wrap
           transitionStatus={props.transitionStatus}
@@ -106,16 +110,16 @@ const Wrap = styled.div`
     padding: 10vw 100px 10vw 0;
   }
 
-  ${(props: StyledWrapProp) => props.isActiveCalendar
-    ? css`
-      @media screen and (min-width: 1901px) {
-        padding: 218px 593px 218px 0;
-      }
-    `
-    : css`
-      padding: 218px 164px 218px 0;
-    `
-  }
+  ${(props: StyledWrapProp) =>
+    props.isActiveCalendar
+      ? css`
+          @media screen and (min-width: 1901px) {
+            padding: 218px 593px 218px 0;
+          }
+        `
+      : css`
+          padding: 218px 164px 218px 0;
+        `}
 
   ${(props: StyledWrapProp) => {
     switch (props.transitionStatus) {

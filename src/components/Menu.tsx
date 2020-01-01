@@ -25,14 +25,13 @@ const MenuWrap: React.FC<MenuWrapProps> = props => {
   return (
     <Wrap transitionStatus={props.transitionStatus} duration={props.duration}>
       <MenuList>
-        {links.filter(link => `/${link.url}` !== currentName).map(
-          (item, index) =>
-            (
-              <MenuItem key={item.url} itemIndex={index}>
-                <Link to={`/${item.url}`}>{item.label}</Link>
-              </MenuItem>
-            )
-        )}
+        {links
+          .filter(link => `/${link.url}` !== currentName)
+          .map((item, index) => (
+            <MenuItem key={item.url} itemIndex={index}>
+              <Link to={`/${item.url}`}>{item.label}</Link>
+            </MenuItem>
+          ))}
       </MenuList>
     </Wrap>
   );
@@ -129,25 +128,26 @@ const MenuItem = styled.li`
   color: #707070;
   opacity: 0;
   animation: ${slideIn} 500ms ease 1 forwards;
-  animation-delay: ${(props: MenuItem) => `${props.itemIndex * 100 + TRANSITION_DURATION}ms`};
+  animation-delay: ${(props: MenuItem) =>
+    `${props.itemIndex * 100 + TRANSITION_DURATION}ms`};
 
   &:not(:last-child) {
     margin-bottom: 80px;
   }
 
   &::after {
-      content: "";
-      display: block;
-      width: 50px;
-      height: 3px;
-      border-radius: 3px;
-      background-color: #707070;
-      transform: translateY(10px);
-      margin-top: 5px;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 300ms ease;
-    }
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    border-radius: 3px;
+    background-color: #707070;
+    transform: translateY(10px);
+    margin-top: 5px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 300ms ease;
+  }
 
   &:hover {
     &::after {

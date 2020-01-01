@@ -6,27 +6,26 @@ export const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-export const useCurrentName = (): Labels | '' => {
+export const useCurrentName = (): Labels | "" => {
   const location = useLocation();
-  const [currentName, setCurrentName] = useState<Labels | ''>('');
+  const [currentName, setCurrentName] = useState<Labels | "">("");
 
   useEffect(() => {
-    
     switch (location.pathname) {
-      case '/about':
-        setCurrentName('ワタリウム美術館について');
+      case "/about":
+        setCurrentName("ワタリウム美術館について");
         break;
-      case '/exhibitions':
-        setCurrentName('展覧会');
+      case "/exhibitions":
+        setCurrentName("展覧会");
         break;
-      case '/membership':
-        setCurrentName('メンバーシップ');
+      case "/membership":
+        setCurrentName("メンバーシップ");
         break;
-      case '/schedule':
-        setCurrentName('スケジュール');
+      case "/schedule":
+        setCurrentName("スケジュール");
         break;
       default:
-        setCurrentName('');
+        setCurrentName("");
     }
   }, [location]);
 

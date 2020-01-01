@@ -12,7 +12,7 @@ export type Urls = "schedule" | "exhibitions" | "membership" | "about" | "";
 export interface TransitionProp {
   transitionStatus: TransitionStatus;
   duration: number;
-};
+}
 
 export interface PostData {
   id: string;
@@ -22,7 +22,7 @@ export interface PostData {
   overview: string;
   start: Date;
   finish: Date;
-};
+}
 
 export interface StyledWrapProp extends TransitionProp {
   isActiveCalendar: boolean;

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import styled, { css } from "styled-components";
 import { TransitionProp } from "../commons/types";
 
-interface Prop extends TransitionProp{};
+interface Prop extends TransitionProp {}
 
 const MembershipForm: React.FC<Prop> = props => {
   const history = useHistory();
@@ -13,7 +13,7 @@ const MembershipForm: React.FC<Prop> = props => {
 
     return () => {
       document.body.style.overflow = "";
-    }
+    };
   }, []);
 
   const onClose = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -27,7 +27,10 @@ const MembershipForm: React.FC<Prop> = props => {
   };
 
   return (
-    <Wrapper duration={props.duration} transitionStatus={props.transitionStatus}>
+    <Wrapper
+      duration={props.duration}
+      transitionStatus={props.transitionStatus}
+    >
       <CloseButton onClick={onClose} />
       <Form onSubmit={onSubmit}>
         <FormTitle>メンバーシップ申込フォーム</FormTitle>
@@ -63,19 +66,19 @@ const MembershipForm: React.FC<Prop> = props => {
         </MembershipWrapper>
         <InputLabel>
           名前
-          <TextInput type="text"/>
+          <TextInput type="text" />
         </InputLabel>
         <InputLabel>
           申込日
-          <TextInput type="text"/>
+          <TextInput type="text" />
         </InputLabel>
         <InputLabel>
           ご住所
-          <TextInput type="text"/>
+          <TextInput type="text" />
         </InputLabel>
         <InputLabel>
           Tel
-          <TextInput type="text"/>
+          <TextInput type="text" />
         </InputLabel>
         <SubmitButton type="submit">送信</SubmitButton>
       </Form>

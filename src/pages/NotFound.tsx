@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const NotFound: React.FC = () => {
   return (
@@ -7,7 +7,7 @@ const NotFound: React.FC = () => {
       <code>404</code>
       <h1>Not Found</h1>
     </Wrap>
-  )
+  );
 };
 
 const Wrap = styled.div`

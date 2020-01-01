@@ -1,25 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled, { css, keyframes } from 'styled-components';
-import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group';
-import uuid from 'uuid';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import styled, { css, keyframes } from "styled-components";
+import {
+  TransitionGroup,
+  CSSTransition,
+  Transition
+} from "react-transition-group";
+import uuid from "uuid";
 import { TransitionProp } from "../commons/types";
-import { useQuery } from "../commons/hooks"
-import MembershipForm from '../components/MembershipForm';
+import { useQuery } from "../commons/hooks";
+import MembershipForm from "../components/MembershipForm";
 
 interface BenefitItem {
   id: string;
   label: string;
   isArtpass: boolean;
   isSupport: boolean;
-};
+}
 
 const benefitItems: BenefitItem[] = [
   {
     id: uuid(),
     label: "メンバーカードのデザインが選べます",
     isArtpass: true,
-    isSupport: true,
+    isSupport: true
   },
   {
     id: uuid(),
@@ -91,8 +95,10 @@ const benefitItems: BenefitItem[] = [
 
 type memberships = "artpass" | "support";
 
-const useMembership = (membership: memberships): [BenefitItem[], memberships, (state: memberships) => void] => {
-  const [ selectedMembership, setMembership ] = useState<memberships>(membership);
+const useMembership = (
+  membership: memberships
+): [BenefitItem[], memberships, (state: memberships) => void] => {
+  const [selectedMembership, setMembership] = useState<memberships>(membership);
 
   const filterBenefits = (): BenefitItem[] => {
     switch (selectedMembership) {
@@ -100,7 +106,7 @@ const useMembership = (membership: memberships): [BenefitItem[], memberships, (s
         return benefitItems.filter(item => item.isArtpass);
       case "support":
         return benefitItems.filter(item => item.isSupport);
-    };
+    }
   };
 
   return [filterBenefits(), selectedMembership, setMembership];
@@ -123,7 +129,7 @@ const useRequestForm = (): boolean => {
   return isOpenForm;
 };
 
-interface Props extends TransitionProp {};
+interface Props extends TransitionProp {}
 
 const Membership: React.FC<Props> = props => {
   const history = useHistory();
@@ -137,58 +143,58 @@ const Membership: React.FC<Props> = props => {
 
   return (
     <Wrapper>
-      <Transition
-        in={isOpenForm}
-        timeout={props.duration}
-        unmountOnExit={true}
-      >
-      {
-        status => <MembershipForm duration={props.duration} transitionStatus={status} />
-      }
+      <Transition in={isOpenForm} timeout={props.duration} unmountOnExit={true}>
+        {status => (
+          <MembershipForm duration={props.duration} transitionStatus={status} />
+        )}
       </Transition>
       <HeadingWrapper>
         <Logo>
-          <img src={`${process.env.PUBLIC_URL}/img/membership.png`} alt="メンバーシップロゴ"/>
+          <img
+            src={`${process.env.PUBLIC_URL}/img/membership.png`}
+            alt="メンバーシップロゴ"
+          />
         </Logo>
-        <RequestButton onClick={onOpenForm}>
-          申し込む
-        </RequestButton>
+        <RequestButton onClick={onOpenForm}>申し込む</RequestButton>
         <Overview>
-        ワタリウム美術館は、スイスの建築家マリオ・ポッタの設計により1990年9月私設美術館として開館しました。<wbr />現代アートを中心にさまざまなジャンルの展覧会を開催、一味違う関連企業も見逃せません。<wbr />２つのメンバーシップ・アートパス会員とサポート会員は、ワタリウム美術館をさらにご活用いただくための提案です。
+          ワタリウム美術館は、スイスの建築家マリオ・ポッタの設計により1990年9月私設美術館として開館しました。
+          <wbr />
+          現代アートを中心にさまざまなジャンルの展覧会を開催、一味違う関連企業も見逃せません。
+          <wbr />
+          ２つのメンバーシップ・アートパス会員とサポート会員は、ワタリウム美術館をさらにご活用いただくための提案です。
         </Overview>
       </HeadingWrapper>
       <Benefits>会員特典</Benefits>
       <BenefitsTab>
-        <Benefit onClick={() => setMembership("artpass")} isSelected={membership === "artpass"}>
+        <Benefit
+          onClick={() => setMembership("artpass")}
+          isSelected={membership === "artpass"}
+        >
           ART PASS
-          <BenefitRuby>
-            アートパス
-          </BenefitRuby>
+          <BenefitRuby>アートパス</BenefitRuby>
         </Benefit>
-        <Benefit onClick={() => setMembership("support")} isSelected={membership === "support"}>
+        <Benefit
+          onClick={() => setMembership("support")}
+          isSelected={membership === "support"}
+        >
           SUPPORT
-          <BenefitRuby>
-            サポート
-          </BenefitRuby>
+          <BenefitRuby>サポート</BenefitRuby>
         </Benefit>
       </BenefitsTab>
       <BenefitItemsWrapper>
-        {
-          benefits.map((item, index) => (
-            <CSSTransition
-              key={uuid()}
-              timeout={props.duration}
-            >
-              {
-                status => (
-                  <BenefitItem transitionStatus={status} duration={props.duration} itemIndex={index - 1}>
-                    {item.label}
-                  </BenefitItem>
-                )
-              }
-            </CSSTransition>
-          ))
-        }
+        {benefits.map((item, index) => (
+          <CSSTransition key={uuid()} timeout={props.duration}>
+            {status => (
+              <BenefitItem
+                transitionStatus={status}
+                duration={props.duration}
+                itemIndex={index - 1}
+              >
+                {item.label}
+              </BenefitItem>
+            )}
+          </CSSTransition>
+        ))}
       </BenefitItemsWrapper>
     </Wrapper>
   );
@@ -266,7 +272,7 @@ const scaleIn = keyframes`
 const Benefit = styled.li`
   margin: auto;
   font-size: 35px;
-  color: ${(props: Benefit) => props.isSelected ? "#202020" : "#a0a0a0"};
+  color: ${(props: Benefit) => (props.isSelected ? "#202020" : "#a0a0a0")};
   letter-spacing: -4px;
   font-variant-ligatures: common-ligatures;
   font-weight: normal;
@@ -277,21 +283,25 @@ const Benefit = styled.li`
     color: #202020;
   }
 
-  ${(props: Benefit) => props.isSelected && css`
-    &::after {
-      content: "";
-      display: block;
-      width: 31px;
-      height: 1px;
-      background-color: #707070;
-      margin: 10px auto 0 auto;
-      animation: ${scaleIn} 300ms ease-in 1 forwards;
-    }
-  `}
+  ${(props: Benefit) =>
+    props.isSelected &&
+    css`
+      &::after {
+        content: "";
+        display: block;
+        width: 31px;
+        height: 1px;
+        background-color: #707070;
+        margin: 10px auto 0 auto;
+        animation: ${scaleIn} 300ms ease-in 1 forwards;
+      }
+    `}
 
-  ${(props: Benefit) => !props.isSelected && css`
-    margin-bottom: 11px;
-  `}
+  ${(props: Benefit) =>
+    !props.isSelected &&
+    css`
+      margin-bottom: 11px;
+    `}
 `;
 
 const BenefitRuby = styled.span`
@@ -331,28 +341,28 @@ const BenefitItem = styled.li`
 
   ${(props: BenefitItemProp) => {
     switch (props.transitionStatus) {
-      case 'entering':
+      case "entering":
         return css`
           opacity: 0;
           transform: translateY(20px);
-        `
-      case 'entered':
+        `;
+      case "entered":
         return css`
           opacity: 1;
           transform: translateY(0);
           transition: all ${props.duration}ms ease;
           transition-delay: ${props.itemIndex * 50}ms;
-        `
-      case 'exited':
+        `;
+      case "exited":
         return css`
           opacity: 1;
           transform: translateY(-100%);
-      `
-      case 'exiting':
+        `;
+      case "exiting":
         return css`
           opacity: 0;
           transform: translateY(-100%);
-        `
+        `;
     }
   }}
 `;

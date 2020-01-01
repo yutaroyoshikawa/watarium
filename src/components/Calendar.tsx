@@ -26,9 +26,9 @@ const Calendar: React.FC<Props> = props => {
     if (daysSelectorRef.current) {
       daysSelectorRef.current.scrollTo({
         behavior: "auto",
-        left: daysSelectorRef.current.clientWidth * (Math.floor(selectedDay / 7))
+        left: daysSelectorRef.current.clientWidth * Math.floor(selectedDay / 7)
       });
-    }    
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -67,7 +67,9 @@ const Calendar: React.FC<Props> = props => {
   };
 
   const filterItems = (): PostData[] => {
-    const selectedDate = moment(`${today.year()}/${selectedMonth}/${selectedDay}`);
+    const selectedDate = moment(
+      `${today.year()}/${selectedMonth}/${selectedDay}`
+    );
 
     switch (props.type) {
       case "exhibitions":
@@ -86,7 +88,12 @@ const Calendar: React.FC<Props> = props => {
   };
 
   return (
-    <Wrapper onMouseEnter={() => props.onSwitch(true)} onMouseLeave={() => props.onSwitch(false)} onClick={() => props.onSwitch(true)} isActive={props.isActive}>
+    <Wrapper
+      onMouseEnter={() => props.onSwitch(true)}
+      onMouseLeave={() => props.onSwitch(false)}
+      onClick={() => props.onSwitch(true)}
+      isActive={props.isActive}
+    >
       <Month>{selectedMonth}月</Month>
       <Day isActive={props.isActive}>{selectedDay}</Day>
       <DateSelectorWrap isActive={props.isActive}>
@@ -170,19 +177,19 @@ const Wrapper = styled.div`
   overflow: hidden;
   transition: all 500ms ease;
 
-  ${(props: CalendarProps) => props.isActive
+  ${(props: CalendarProps) =>
+    props.isActive
       ? css`
-        width: 593px;
-        @media screen and (max-width: 1800px) {
-          border-left: none;
-          box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
-        }
-      `
+          width: 593px;
+          @media screen and (max-width: 1800px) {
+            border-left: none;
+            box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+          }
+        `
       : css`
-        width: 100px;
-        cursor: pointer;
-      `
-  }
+          width: 100px;
+          cursor: pointer;
+        `}
 `;
 
 const Month = styled.p`
@@ -201,19 +208,20 @@ const fadeIn = keyframes`
 `;
 
 const Day = styled.p`
-    font-size: 22px;
-    color: #a0a0a0;
-    text-align: center;
-    margin-top: 70px;
-    opacity: 0;
-    animation: ${fadeIn} 500ms ease 1 forwards;
-    animation-delay: 500ms;
+  font-size: 22px;
+  color: #a0a0a0;
+  text-align: center;
+  margin-top: 70px;
+  opacity: 0;
+  animation: ${fadeIn} 500ms ease 1 forwards;
+  animation-delay: 500ms;
 
-    ${(props: CalendarProps) => props.isActive && css`
-          display: none;
-          pointer-events: none;
-        `
-    }
+  ${(props: CalendarProps) =>
+    props.isActive &&
+    css`
+      display: none;
+      pointer-events: none;
+    `}
 `;
 
 const DateSelectorWrap = styled.div`
@@ -223,15 +231,15 @@ const DateSelectorWrap = styled.div`
   margin: 84px auto;
   transform: opacity 500ms ease;
 
-  ${(props: CalendarProps) => props.isActive
+  ${(props: CalendarProps) =>
+    props.isActive
       ? css`
-        opacity: 1;
-      `
+          opacity: 1;
+        `
       : css`
-        opacity: 0;
-        pointer-events: none;
-      `
-  }
+          opacity: 0;
+          pointer-events: none;
+        `}
 `;
 
 const DaysWrap = styled.div`
@@ -313,11 +321,12 @@ const ArticlesWrap = styled.dl`
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  ${(props: CalendarProps) => !props.isActive && css`
+  ${(props: CalendarProps) =>
+    !props.isActive &&
+    css`
       display: none;
       pointer-events: none;
-    `
-  }
+    `}
 `;
 
 const ArticleName = styled.dd`
@@ -340,24 +349,24 @@ const ArticleItem = styled(Link)`
 
   ${(props: TransitionProp) => {
     switch (props.transitionStatus) {
-      case 'entering':
+      case "entering":
         return css`
           opacity: 0;
-        `
-      case 'entered':
+        `;
+      case "entered":
         return css`
           opacity: 1;
           transition: opacity ${props.duration}ms ease;
-        `
-      case 'exited':
+        `;
+      case "exited":
         return css`
           opacity: 1;
-        `
-      case 'exiting':
+        `;
+      case "exiting":
         return css`
           opacity: 0;
           transition: opacity ${props.duration}ms ease;
-        `
+        `;
     }
   }}
 
