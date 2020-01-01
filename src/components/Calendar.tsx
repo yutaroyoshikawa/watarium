@@ -3,7 +3,9 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import styled, { css, keyframes } from "styled-components";
-import { exhibitions, schedules, PostData, TRANSITION_DURATION, TransitionProp } from "../App";
+import { TRANSITION_DURATION } from "../App";
+import { exhibitions, schedules } from "../commons/maps";
+import { TransitionProp, PostData } from "../commons/types";
 
 const today = moment();
 

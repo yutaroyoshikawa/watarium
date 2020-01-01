@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { Transition } from "react-transition-group";
 import { Link, useLocation } from "react-router-dom";
-import { links, TRANSITION_DURATION, TransitionProp } from "../App";
+import { links, TRANSITION_DURATION } from "../App";
+import { TransitionProp } from "../commons/types";
 
 const useMenuWrap = (): string => {
   const [currentName, setCurrentName] = useState<string>("");

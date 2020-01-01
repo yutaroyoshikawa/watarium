@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
 import styled, { css } from 'styled-components';
-import { TransitionProp, schedules } from '../App';
+import { TransitionProp, StyledWrapProp } from "../commons/types";
+import { schedules } from "../commons/maps";
+import { useQuery } from "../commons/hooks";
 import Calendar from "../components/Calendar";
 
 interface Props extends TransitionProp {};
-
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
 
 const useSchedule = (): number | null => {
   const query = useQuery();
@@ -77,9 +74,7 @@ const Schedule: React.FC<Props> = props => {
 
 export default Schedule;
 
-interface WrapProp extends TransitionProp {
-  isActiveCalendar: boolean;
-}
+
 
 const Wrap = styled.div`
   box-sizing: border-box;
@@ -87,14 +82,14 @@ const Wrap = styled.div`
     padding: 0 130px 0 30px;
   }
 
-  ${(props: WrapProp) => props.isActiveCalendar && css`
+  ${(props: StyledWrapProp) => props.isActiveCalendar && css`
         @media screen and (min-width: 1901px) {
           padding-right: 630px;
         }
       `
   }
 
-  ${(props: WrapProp) => {
+  ${(props: StyledWrapProp) => {
     switch (props.transitionStatus) {
       case "entering":
         return css`

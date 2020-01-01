@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import styled, { keyframes, css } from "styled-components";
 import Calendar from "../components/Calendar";
-import { TransitionProp, exhibitions } from "../App";
+import { exhibitions } from "../commons/maps";
+import { TransitionProp, StyledWrapProp } from "../commons/types";
 import moment from "moment";
+import { useQuery } from "../commons/hooks";
 
 interface Props extends TransitionProp {}
-
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
 
 const useEchibition = (): number | null => {
   const query = useQuery();
@@ -101,10 +98,6 @@ const Exhibitions: React.FC<Props> = props => {
 
 export default Exhibitions;
 
-interface WrapProp extends TransitionProp {
-  isActiveCalendar: boolean;
-}
-
 const Wrap = styled.div`
   margin: 0 auto;
   box-sizing: border-box;
@@ -113,7 +106,7 @@ const Wrap = styled.div`
     padding: 10vw 100px 10vw 0;
   }
 
-  ${(props: WrapProp) => props.isActiveCalendar
+  ${(props: StyledWrapProp) => props.isActiveCalendar
     ? css`
       @media screen and (min-width: 1901px) {
         padding: 218px 593px 218px 0;
@@ -124,7 +117,7 @@ const Wrap = styled.div`
     `
   }
 
-  ${(props: WrapProp) => {
+  ${(props: StyledWrapProp) => {
     switch (props.transitionStatus) {
       case "entering":
         return css`

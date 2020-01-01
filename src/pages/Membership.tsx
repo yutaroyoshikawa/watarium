@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group';
 import uuid from 'uuid';
-import { TransitionProp, TRANSITION_DURATION } from '../App';
+import { TransitionProp } from "../commons/types";
+import { useQuery } from "../commons/hooks"
 import MembershipForm from '../components/MembershipForm';
 
 interface BenefitItem {
@@ -105,10 +106,6 @@ const useMembership = (membership: memberships): [BenefitItem[], memberships, (s
   return [filterBenefits(), selectedMembership, setMembership];
 };
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
-
 const useRequestForm = (): boolean => {
   const query = useQuery();
   const isOpen = query.get("form");
@@ -126,7 +123,9 @@ const useRequestForm = (): boolean => {
   return isOpenForm;
 };
 
-const Membership: React.FC = () => {
+interface Props extends TransitionProp {};
+
+const Membership: React.FC<Props> = props => {
   const history = useHistory();
   const isOpenForm = useRequestForm();
   const [benefits, membership, setMembership] = useMembership("artpass");
@@ -140,11 +139,11 @@ const Membership: React.FC = () => {
     <Wrapper>
       <Transition
         in={isOpenForm}
-        timeout={TRANSITION_DURATION}
+        timeout={props.duration}
         unmountOnExit={true}
       >
       {
-        status => <MembershipForm duration={TRANSITION_DURATION} transitionStatus={status} />
+        status => <MembershipForm duration={props.duration} transitionStatus={status} />
       }
       </Transition>
       <HeadingWrapper>
@@ -178,11 +177,11 @@ const Membership: React.FC = () => {
           benefits.map((item, index) => (
             <CSSTransition
               key={uuid()}
-              timeout={TRANSITION_DURATION}
+              timeout={props.duration}
             >
               {
                 status => (
-                  <BenefitItem transitionStatus={status} duration={TRANSITION_DURATION} itemIndex={index - 1}>
+                  <BenefitItem transitionStatus={status} duration={props.duration} itemIndex={index - 1}>
                     {item.label}
                   </BenefitItem>
                 )

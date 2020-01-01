@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { TransitionProp } from '../App';
+import { TransitionProp } from "../commons/types";
 
 interface Prop extends TransitionProp{};
 

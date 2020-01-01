@@ -1,13 +1,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { TransitionProp, TRANSITION_DURATION } from '../App';
+import { TransitionProp } from "../commons/types";
 import ScrollSlideIn from '../components/ScrollSlideIn';
 
 interface Props extends TransitionProp {}
 
 const About: React.FC<Props> = props => {
   return (
-    <Wrapper transitionStatus={props.transitionStatus} duration={TRANSITION_DURATION}>
+    <Wrapper transitionStatus={props.transitionStatus} duration={props.duration}>
       <Title>ワタリウム美術館</Title>
       <AboutContent>
       アートの「世界」は、いま文字通り「世界のアート」へと、広がろうとしています。そしてワタリウム美術館は、そうしたアートの発展の中心の一つをなしていると、わたしは考えています。いま、世界の至る所で多くの人々が求めてやまないものを、ワタリウム美術館は最も高いレベルで、しかも極めて洗練された方法で、実現しているのです。

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { TransitionProp, exhibitions } from "../App";
+import { exhibitions } from "../commons/maps";
+import { TransitionProp } from "../commons/types";
 import moment from "moment";
 
 interface Prop extends TransitionProp {}
