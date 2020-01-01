@@ -29,12 +29,13 @@ const useSchedule = (): number | null => {
 };
 
 const Schedule: React.FC<Props> = props => {
+  const [isActiveCalender, setIsActiveCalender] = useState<boolean>(false);
   const scheduleIndex = useSchedule();
   const latestSchedule = schedules.sort((a, b) => a.start > b.start ? -1 : 1)[0];
 
   return (
-    <Wrap>
-      <Calendar type="schedule" />
+    <Wrap isActiveCalendar={isActiveCalender} duration={props.duration} transitionStatus={props.transitionStatus}>
+      <Calendar type="schedule" isActive={isActiveCalender} onSwitch={setIsActiveCalender} />
       {
         scheduleIndex !== null
         ? (
@@ -76,13 +77,50 @@ const Schedule: React.FC<Props> = props => {
 
 export default Schedule;
 
+interface WrapProp extends TransitionProp {
+  isActiveCalendar: boolean;
+}
+
 const Wrap = styled.div`
-  padding-right: 630px;
   box-sizing: border-box;
+  @media screen and (max-width: 1900px) {
+    padding: 0 130px 0 30px;
+  }
+
+  ${(props: WrapProp) => props.isActiveCalendar && css`
+        @media screen and (min-width: 1901px) {
+          padding-right: 630px;
+        }
+      `
+  }
+
+  ${(props: WrapProp) => {
+    switch (props.transitionStatus) {
+      case "entering":
+        return css`
+          opacity: 0;
+        `;
+      case "entered":
+        return css`
+          opacity: 1;
+          transition: opacity ${props.duration}ms ease;
+        `;
+      case "exited":
+        return css`
+          opacity: 1;
+        `;
+      case "exiting":
+        return css`
+          opacity: 0;
+          transition: opacity ${props.duration}ms ease;
+        `;
+    }
+  }}
 `;
 
 const ScheduleWrap = styled.div`
-  width: 965px;
+  width: 100%;
+  max-width: 965px;
   margin: 218px auto;
 
   ${(props: TransitionProp) => {
@@ -119,6 +157,7 @@ const SubTitle = styled.span`
   color: #707070;
   display: block;
   margin-top: 30px;
+  line-height: 50px;
 `;
 
 const SumbnailWrapper = styled.figure`

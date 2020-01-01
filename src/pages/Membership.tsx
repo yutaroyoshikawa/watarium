@@ -196,8 +196,11 @@ const Membership: React.FC = () => {
 };
 
 const Wrapper = styled.div`
-  width: 820px;
+  width: 100%;
+  max-width: 990px;
   margin: 221px auto;
+  padding: 0 50px;
+  box-sizing: border-box;
 `;
 
 const HeadingWrapper = styled.section`
@@ -221,9 +224,11 @@ const RequestButton = styled.button`
   outline: none;
   cursor: pointer;
   margin: auto;
+  background-color: #fff;
 `;
 
 const Overview = styled.p`
+  width: 100%;
   font-size: 15px;
   color: #707070;
   line-height: 32px;

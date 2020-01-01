@@ -29,8 +29,10 @@ const About: React.FC<Props> = props => {
 };
 
 const Wrapper = styled.div`
-  padding: 328px 0 116px 0;
-  width: 995px;
+  padding: 328px 50px 116px 50px;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 995px;
   margin: 0 auto;
   ${(props: TransitionProp) => {
     switch (props.transitionStatus) {

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { exhibitions, schedules, PostData, TRANSITION_DURATION, TransitionProp } from "../App";
 
 const today = moment();
@@ -11,6 +11,8 @@ const days: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 interface Props {
   type: "exhibitions" | "schedule";
+  isActive: boolean;
+  onSwitch: (isActive: boolean) => void;
 }
 
 const Calendar: React.FC<Props> = props => {
@@ -21,10 +23,10 @@ const Calendar: React.FC<Props> = props => {
   useEffect(() => {
     if (daysSelectorRef.current) {
       daysSelectorRef.current.scrollTo({
-        behavior: "smooth",
-        left: daysSelectorRef.current.clientWidth * (selectedDay / 7)
+        behavior: "auto",
+        left: daysSelectorRef.current.clientWidth * (Math.floor(selectedDay / 7))
       });
-    }
+    }    
     // eslint-disable-next-line
   }, []);
 
@@ -63,14 +65,14 @@ const Calendar: React.FC<Props> = props => {
   };
 
   const filterItems = (): PostData[] => {
-    const selectedDate = moment(`2019/${selectedMonth}/${selectedDay}`);
+    const selectedDate = moment(`${today.year()}/${selectedMonth}/${selectedDay}`);
 
     switch (props.type) {
       case "exhibitions":
         return exhibitions.filter(
           post =>
-            moment(selectedDate).isAfter(post.start) &&
-            moment(selectedDate).isBefore(post.finish)
+            moment(selectedDate).isAfter(moment(post.start)) &&
+            moment(selectedDate).isBefore(moment(post.finish))
         );
       case "schedule":
         return schedules.filter(
@@ -82,9 +84,10 @@ const Calendar: React.FC<Props> = props => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper onMouseEnter={() => props.onSwitch(true)} onMouseLeave={() => props.onSwitch(false)} onClick={() => props.onSwitch(true)} isActive={props.isActive}>
       <Month>{selectedMonth}月</Month>
-      <DateSelectorWrap>
+      <Day isActive={props.isActive}>{selectedDay}</Day>
+      <DateSelectorWrap isActive={props.isActive}>
         <PreviusWeek onClick={onClickPrevius}>
           <PreviusArrow
             type="image/svg+xml"
@@ -109,7 +112,7 @@ const Calendar: React.FC<Props> = props => {
           />
         </NextWeek>
       </DateSelectorWrap>
-      <ArticlesWrap>
+      <ArticlesWrap isActive={props.isActive}>
         <TransitionGroup>
           {filterItems().map(item => (
             <CSSTransition
@@ -124,6 +127,7 @@ const Calendar: React.FC<Props> = props => {
                   }`}
                   transitionStatus={status}
                   duration={TRANSITION_DURATION}
+                  onClick={() => props.onSwitch(false)}
                 >
                   <ArticleName>
                     {item.title}
@@ -147,8 +151,11 @@ const Calendar: React.FC<Props> = props => {
 
 export default Calendar;
 
+interface CalendarProps {
+  isActive: boolean;
+}
+
 const Wrapper = styled.div`
-  width: 593px;
   height: 100vh;
   border-left: solid 1px #c0c0c0;
   position: fixed;
@@ -157,6 +164,23 @@ const Wrapper = styled.div`
   z-index: 100;
   padding: 122px 0 63px 0;
   box-sizing: border-box;
+  background: #fff;
+  overflow: hidden;
+  transition: all 500ms ease;
+
+  ${(props: CalendarProps) => props.isActive
+      ? css`
+        width: 593px;
+        @media screen and (max-width: 1800px) {
+          border-left: none;
+          box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+        }
+      `
+      : css`
+        width: 100px;
+        cursor: pointer;
+      `
+  }
 `;
 
 const Month = styled.p`
@@ -165,11 +189,47 @@ const Month = styled.p`
   text-align: center;
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const Day = styled.p`
+    font-size: 22px;
+    color: #a0a0a0;
+    text-align: center;
+    margin-top: 70px;
+    opacity: 0;
+    animation: ${fadeIn} 500ms ease 1 forwards;
+    animation-delay: 500ms;
+
+    ${(props: CalendarProps) => props.isActive && css`
+          display: none;
+          pointer-events: none;
+        `
+    }
+`;
+
 const DateSelectorWrap = styled.div`
   width: 481px;
   display: flex;
   align-items: center;
   margin: 84px auto;
+  transform: opacity 500ms ease;
+
+  ${(props: CalendarProps) => props.isActive
+      ? css`
+        opacity: 1;
+      `
+      : css`
+        opacity: 0;
+        pointer-events: none;
+      `
+  }
 `;
 
 const DaysWrap = styled.div`
@@ -245,13 +305,26 @@ const PreviusArrow = styled.object`
 `;
 
 const ArticlesWrap = styled.dl`
-  margin-left: 85px;
+  margin: 0 50px 0 85px;
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  ${(props: CalendarProps) => !props.isActive && css`
+      display: none;
+      pointer-events: none;
+    `
+  }
 `;
 
 const ArticleName = styled.dd`
   font-size: 18px;
   color: #707070;
+  display: inline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ArticleTime = styled.dt`

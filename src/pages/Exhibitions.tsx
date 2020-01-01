@@ -30,6 +30,7 @@ const useEchibition = (): number | null => {
 };
 
 const Exhibitions: React.FC<Props> = props => {
+  const [isActiveCalendar, setIsActiveCalender] = useState<boolean>(false);
   const exhibitionIndex = useEchibition();
   const latestExhibition = exhibitions.sort((a, b) =>
     a.start > b.start ? -1 : 1
@@ -37,11 +38,12 @@ const Exhibitions: React.FC<Props> = props => {
 
   return (
     <>
-      <Calendar type="exhibitions" />
+      <Calendar type="exhibitions" isActive={isActiveCalendar} onSwitch={setIsActiveCalender} />
       {exhibitionIndex !== null ? (
         <Wrap
           transitionStatus={props.transitionStatus}
           duration={props.duration}
+          isActiveCalendar={isActiveCalendar}
         >
           <SumbnailWrap>
             <Sumbnail
@@ -72,6 +74,7 @@ const Exhibitions: React.FC<Props> = props => {
         <Wrap
           transitionStatus={props.transitionStatus}
           duration={props.duration}
+          isActiveCalendar={isActiveCalendar}
         >
           <SumbnailWrap>
             <Sumbnail
@@ -98,12 +101,30 @@ const Exhibitions: React.FC<Props> = props => {
 
 export default Exhibitions;
 
+interface WrapProp extends TransitionProp {
+  isActiveCalendar: boolean;
+}
+
 const Wrap = styled.div`
-  padding: 218px 593px 218px 0;
   margin: 0 auto;
   box-sizing: border-box;
+  transition: padding 500ms ease;
+  @media screen and (max-width: 1900px) {
+    padding: 10vw 100px 10vw 0;
+  }
 
-  ${(props: TransitionProp) => {
+  ${(props: WrapProp) => props.isActiveCalendar
+    ? css`
+      @media screen and (min-width: 1901px) {
+        padding: 218px 593px 218px 0;
+      }
+    `
+    : css`
+      padding: 218px 164px 218px 0;
+    `
+  }
+
+  ${(props: WrapProp) => {
     switch (props.transitionStatus) {
       case "entering":
         return css`
@@ -132,16 +153,21 @@ const SumbnailWrap = styled.div`
   justify-content: center;
   transform: translateX(100px);
   margin-bottom: 240px;
+  @media screen and (max-width: 1900px) {
+    transform: translateX(60px);
+  }
 `;
 
 const InfoCard = styled.div`
-  width: 749px;
+  width: 50vw;
+  max-width: 749px;
+  min-width: 512px;
   height: 245px;
   padding: 50px;
   box-sizing: border-box;
   position: absolute;
   z-index: 2;
-  transform: translate(-9vw, 420px);
+  transform: translate(-9vw, 22vw);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -186,17 +212,23 @@ const Date = styled.time`
 `;
 
 const Sumbnail = styled.img`
-  width: 734px;
-  height: 621px;
+  width: 45vw;
+  max-width: 734px;
+  min-width: 460px;
+  height: 35vw;
+  max-height: 621px;
+  min-height: 380px;
   object-fit: cover;
 `;
 
 const ExhibitionContent = styled.p`
   width: 100%;
+  max-width: 990px;
   font-size: 16px;
   color: #9d9d9d;
   line-height: 40px;
-  padding: 0 80px 0 100px;
+  padding: 0 40px;
+  margin: 0 auto;
   text-align: justify;
   box-sizing: border-box;
 `;

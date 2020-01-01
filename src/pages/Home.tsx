@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { TransitionProp, exhibitions } from "../App";
@@ -41,6 +41,15 @@ const useSlideshow = (): [number, (index: number) => void] => {
 
 const Home: React.FC<Prop> = props => {
   const [index, setIndex] = useSlideshow();
+  const history = useHistory();
+
+  const onClickSumbnail = (
+    e: React.MouseEvent<HTMLImageElement>,
+    url: string
+  ) => {
+    e.preventDefault();
+    history.push(url);
+  };
 
   return (
     <Wrap transitionStatus={props.transitionStatus} duration={props.duration}>
@@ -58,6 +67,16 @@ const Home: React.FC<Prop> = props => {
             <Sumbnail
               src={exhibitions[index].sumbnail}
               alt={exhibitions[index].title}
+              onClick={e =>
+                onClickSumbnail(
+                  e,
+                  `/exhibitions?name=${exhibitions[index].title}${
+                    exhibitions[index].subtitle
+                      ? exhibitions[index].subtitle
+                      : ""
+                  }`
+                )
+              }
             />
             <NavWrapper>
               {exhibitions.map((_, itemIndex) => (
@@ -159,7 +178,9 @@ const Sumbnail = styled.img`
 `;
 
 const InfoCard = styled(Link)`
-  width: 749px;
+  width: 50vw;
+  max-width: 749px;
+  min-width: 512px;
   height: 245px;
   padding: 50px;
   box-sizing: border-box;
@@ -173,6 +194,10 @@ const InfoCard = styled(Link)`
   background-color: #fff;
   cursor: pointer;
   transition: box-shadow 300ms ease;
+
+  @media screen and (max-width: 1900px) {
+    transform: translateX(-13vw);
+  }
 
   ${(props: TransitionProp) => {
     switch (props.transitionStatus) {
@@ -315,7 +340,7 @@ const Date = styled.time`
 
 const NavWrapper = styled.div`
   position: relative;
-  bottom: 158px;
+  bottom: 30px;
   z-index: 3;
   display: flex;
   margin: 84px auto;
