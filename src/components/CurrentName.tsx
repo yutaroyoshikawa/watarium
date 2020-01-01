@@ -1,33 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
-import { Labels } from '../commons/types';
-
-const useCurrentName = (): Labels | '' => {
-  const location = useLocation();
-  const [currentName, setCurrentName] = useState<Labels | ''>('');
-
-  useEffect(() => {
-    switch (location.pathname) {
-      case '/about':
-        setCurrentName('ワタリウム美術館について');
-        break;
-      case '/exhibitions':
-        setCurrentName('展覧会');
-        break;
-      case '/membership':
-        setCurrentName('メンバーシップ');
-        break;
-      case '/schedule':
-        setCurrentName('スケジュール');
-        break;
-      default:
-        setCurrentName('');
-    }
-  }, [location.pathname]);
-
-  return currentName;
-};
+import { useCurrentName } from "../commons/hooks";
 
 const CurrentName = () => {
   const currentName = useCurrentName();

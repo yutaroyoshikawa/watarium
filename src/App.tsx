@@ -7,6 +7,7 @@ import {
   useLocation
 } from "react-router-dom";
 import { Labels, Urls } from "./commons/types";
+import { useCurrentName } from "./commons/hooks";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import styled, { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
@@ -83,11 +84,14 @@ export const TRANSITION_DURATION = 300;
 
 const PageSwicher: React.FC = () => {
   const location = useLocation();
+  const currentName = useCurrentName();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    // eslint-disable-next-line
-  }, [location.pathname]);
+    window.setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.title = `ワタリウム美術館｜${currentName ? currentName : "トップ"}`;
+    }, 0);
+  }, [location, currentName])
 
   return (
     <TransitionGroup>
