@@ -5,3 +5,9 @@
 ```shell
 npm install --save & npm run start
 ```
+
+## Tech stack
+
+- React hooks
+- styled components
+- react transition group
