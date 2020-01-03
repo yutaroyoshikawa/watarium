@@ -6,8 +6,9 @@
 npm install --save & npm run start
 ```
 
-## Tech stack
+## Tech stacks
 
 - React hooks
 - styled components
 - react transition group
+- react router dom
