@@ -57,6 +57,10 @@ const Wrapper = styled.div`
         `;
     }
   }}
+
+  @media screen and (max-width: 633px) {
+    padding: 328px 20px 116px 20px;
+  }
 `;
 
 const Title = styled.h1`

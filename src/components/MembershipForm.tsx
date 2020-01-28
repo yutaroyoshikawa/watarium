@@ -35,7 +35,7 @@ const MembershipForm: React.FC<Prop> = props => {
       <Form onSubmit={onSubmit}>
         <FormTitle>メンバーシップ申込フォーム</FormTitle>
         <MembershipWrapper>
-          <li>
+          <MembershipItem>
             <MembershipName>ART PASS</MembershipName>
             <MembershipRuby>アートパス</MembershipRuby>
             <MembershipPlans>
@@ -48,8 +48,8 @@ const MembershipForm: React.FC<Prop> = props => {
                 <PlanPrice>¥12,000</PlanPrice>
               </PlanWrapper>
             </MembershipPlans>
-          </li>
-          <li>
+          </MembershipItem>
+          <MembershipItem>
             <MembershipName>SUPPORT</MembershipName>
             <MembershipRuby>サポート</MembershipRuby>
             <MembershipPlans>
@@ -62,7 +62,7 @@ const MembershipForm: React.FC<Prop> = props => {
                 <PlanPrice>¥60,000</PlanPrice>
               </PlanWrapper>
             </MembershipPlans>
-          </li>
+          </MembershipItem>
         </MembershipWrapper>
         <InputLabel>
           名前
@@ -122,29 +122,71 @@ const Wrapper = styled.div`
 
 const FormTitle = styled.h2`
   color: #fff;
-  font-size: 25px;
+
+  @media screen and (min-width: 1024px) {
+    font-size: 25px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 25px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 15px;
+  }
 `;
 
 const MembershipWrapper = styled.ul`
-  margin: 133px auto;
-  display: flex;
-  justify-content: space-between;
+
+  @media screen and (min-width: 1024px) {
+    display: flex;
+    justify-content: space-between;
+    margin: 133px auto;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    display: flex;
+    justify-content: center;
+    margin: 133px auto;
+  }
+  @media screen and (max-width: 633px) {
+    margin: 80px auto;
+  }
+`;
+
+const MembershipItem = styled.li`
+  @media screen and (max-width: 633px) {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    :last-child {
+      margin-top: 52px;
+    }
+  }
 `;
 
 const MembershipName = styled.span`
   display: block;
   margin: auto;
-  font-size: 35px;
   color: #fff;
-  letter-spacing: -4px;
   font-variant-ligatures: common-ligatures;
   font-weight: normal;
   text-align: center;
+
+  @media screen and (min-width: 1024px) {
+    font-size: 35px;
+    letter-spacing: -4px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 35px;
+    letter-spacing: -4px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 22px;
+    letter-spacing: -2px;
+  }
 `;
 
 const MembershipRuby = styled.span`
   width: 100%;
-  font-size: 16px;
   color: #fff;
   font-variant-ligatures: none;
   letter-spacing: 0;
@@ -152,21 +194,47 @@ const MembershipRuby = styled.span`
   top: -1px;
   display: inline-block;
   text-align: center;
+
+  @media screen and (min-width: 1024px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 10px;
+  }
 `;
 
 const MembershipPlans = styled.dl`
   display: grid;
-  grid-template-columns: 180px 180px;
-  grid-column-gap: 28px;
-  margin-top: 30px;
+
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: 180px 180px;
+    margin-top: 30px;
+    grid-column-gap: 28px;
+    :last-child {
+      margin-left: 100px;
+    }
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    grid-template-rows: 180px 180px;
+    margin-top: 30px;
+    grid-row-gap: 28px;
+    :last-child {
+      margin-left: 100px;
+    }
+  }
+  @media screen and (max-width: 633px) {
+    margin: 30px auto 0 auto;
+    grid-template-columns: 100px 100px;
+    grid-column-gap: 18px;
+  }
 `;
 
 const PlanWrapper = styled.div`
-  width: 180px;
-  height: 180px;
-  padding: 20px 35px;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: #F7BC77;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -178,22 +246,70 @@ const PlanWrapper = styled.div`
   &:hover {
     background-color: #c0c0c0;
   }
+
+  @media screen and (min-width: 1024px) {
+    width: 180px;
+    height: 180px;
+    padding: 20px 35px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 180px;
+    height: 180px;
+    padding: 20px 35px;
+  }
+  @media screen and (max-width: 633px) {
+    width: 100px;
+    height: 100px;
+    padding: 20px 15px;
+  }
 `;
 
 const PlanSpan = styled.dt`
-  font-size: 16px;
-  color: #707070;
+  color: #fff;
+
+  @media screen and (min-width: 1024px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 10px;
+  }
 `;
 
 const PlanPrice = styled.dd`
-  font-size: 30px;
-  color: #707070;
+  color: #fff;
   text-align: left;
+
+  @media screen and (min-width: 1024px) {
+    font-size: 30px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 30px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 19px;
+  }
 `;
 
 const Form = styled.form`
-  width: 920px;
-  margin: 229px auto;
+  @media screen and (min-width: 1024px) {
+    width: 920px;
+    margin: 229px auto;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 100%;
+    margin: 229px 20px;
+  }
+
+  @media screen and (max-width: 633px) {
+    width: 100%;
+    margin: 229px auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
 `;
 
 const InputLabel = styled.label`
@@ -234,12 +350,8 @@ const bar = css`
 `;
 
 const CloseButton = styled.div`
-  width: 63px;
-  height: 63px;
   cursor: pointer;
   position: fixed;
-  top: 105px;
-  right: 103px;
   z-index: 1011;
   display: flex;
   flex-direction: column;
@@ -254,6 +366,27 @@ const CloseButton = styled.div`
   &::after {
     ${bar}
     transform: rotate(-45deg);
+  }
+
+  @media screen and (min-width: 1024px) {
+    width: 63px;
+    height: 63px;
+    top: 105px;
+    right: 103px;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 63px;
+    height: 63px;
+    top: 105px;
+    right: 103px;
+  }
+
+  @media screen and (max-width: 633px) {
+    width: 33px;
+    height: 33px;
+    top: 97px;
+    right: 19px;
   }
 `;
 

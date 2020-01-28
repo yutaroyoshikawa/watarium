@@ -9,10 +9,21 @@ const CurrentName = () => {
 };
 
 const PageName = styled.h3`
-  display: inline-block;
-  font-size: 15px;
-  color: #707070;
-  height: 16px;
+  @media screen and (min-width: 1024px) {
+    display: inline-block;
+    font-size: 15px;
+    color: #707070;
+    height: 16px;
+    margin-top: 47px;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    display: none;
+  }
+
+  @media screen and (max-width: 633px) {
+    display: none;
+  }
 `;
 
 export default CurrentName;

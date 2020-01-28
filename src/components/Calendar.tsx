@@ -177,6 +177,14 @@ const Wrapper = styled.div`
   overflow: hidden;
   transition: all 500ms ease;
 
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    display: none; 
+  }
+
+  @media screen and (max-width: 633px) {
+    display: none;
+  }
+
   ${(props: CalendarProps) =>
     props.isActive
       ? css`

@@ -202,58 +202,127 @@ const Membership: React.FC<Props> = props => {
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 990px;
-  margin: 221px auto;
-  padding: 0 50px;
   box-sizing: border-box;
+
+  @media screen and (min-width: 1024px) {
+    max-width: 990px;
+    margin: 221px auto;
+    padding: 0 50px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    max-width: 100%;
+    margin: 221px auto;
+    padding: 0 50px;
+  }
+  @media screen and (max-width: 633px) {
+    max-width: 100%;
+    margin: 87px auto;
+    padding: 0 39px;
+  }
 `;
 
 const HeadingWrapper = styled.section`
-  display: grid;
-  grid-template-columns: 233px 1fr;
-  grid-row-gap: 56px;
-  margin-bottom: 256px;
+  @media screen and (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 233px 1fr;
+    grid-row-gap: 56px;
+    margin-bottom: 256px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    margin-bottom: 256px;
+  }
+  @media screen and (max-width: 633px) {
+    margin-bottom: 64px;
+  }
 `;
 
 const Logo = styled.figure`
-  width: 233px;
+  @media screen and (min-width: 1024px) {
+    width: 233px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 233px;
+  }
+  @media screen and (max-width: 633px) {
+    width: 116px;
+  }
 `;
 
 const RequestButton = styled.button`
-  width: 207px;
-  height: 58px;
-  border: solid 1px #707070;
   border-radius: 5px;
-  font-size: 25px;
-  color: #707070;
+  color: #FFF;
   outline: none;
   cursor: pointer;
   margin: auto;
-  background-color: #fff;
+  background-color: #F7BC77;
+  border: none;
+
+  @media screen and (min-width: 1024px) {
+    width: 207px;
+    height: 58px;
+    font-size: 25px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 207px;
+    height: 58px;
+    font-size: 25px;
+  }
+  @media screen and (max-width: 633px) {
+    width: 100%;
+    height: 32px;
+    font-size: 13px;
+    margin: 27px 0;
+  }
 `;
 
 const Overview = styled.p`
   width: 100%;
-  font-size: 15px;
   color: #707070;
   line-height: 32px;
   grid-row: 2;
   grid-column: 1 / 3;
   text-align: justify;
+  @media screen and (min-width: 1024px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 13px;
+  }
 `;
 
 const Benefits = styled.h2`
-  font-size: 25px;
   color: #707070;
+  @media screen and (min-width: 1024px) {
+    font-size: 25px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 25px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 15px;
+  }
 `;
 
 const BenefitsTab = styled.ul`
   margin: 41px auto;
   display: grid;
-  grid-template-columns: 155px 155px;
-  grid-column-gap: 118px;
   justify-content: center;
   text-align: center;
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: 155px 155px;
+    grid-column-gap: 118px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    grid-template-columns: 155px 155px;
+    grid-column-gap: 118px;
+  }
+  @media screen and (max-width: 633px) {
+    grid-template-columns: 83px 83px;
+    grid-column-gap: 70px;
+  }
 `;
 
 interface Benefit {
@@ -271,9 +340,7 @@ const scaleIn = keyframes`
 
 const Benefit = styled.li`
   margin: auto;
-  font-size: 35px;
   color: ${(props: Benefit) => (props.isSelected ? "#202020" : "#a0a0a0")};
-  letter-spacing: -4px;
   font-variant-ligatures: common-ligatures;
   font-weight: normal;
   cursor: pointer;
@@ -302,24 +369,58 @@ const Benefit = styled.li`
     css`
       margin-bottom: 11px;
     `}
+
+  @media screen and (min-width: 1024px) {
+    font-size: 35px;
+    letter-spacing: -4px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 35px;
+    letter-spacing: -4px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 19px;
+    letter-spacing: -2px;
+  }
 `;
 
 const BenefitRuby = styled.span`
-  font-size: 16px;
   color: #707070;
   font-variant-ligatures: none;
   letter-spacing: 0;
   position: relative;
   top: -1px;
   display: block;
+  @media screen and (min-width: 1024px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 633px) {
+    font-size: 7px;
+  }
 `;
 
 const BenefitItemsWrapper = styled(TransitionGroup)`
   width: 100%;
   display: grid;
-  grid-auto-rows: 150px;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  grid-gap: 68px;
+  @media screen and (min-width: 1024px) {
+    grid-auto-rows: 150px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 68px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    grid-auto-rows: 150px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 68px;
+  }
+  @media screen and (max-width: 633px) {
+    grid-auto-rows: 100px;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 56px;
+    transform: translateX(14px);
+  }
 `;
 
 interface BenefitItemProp extends TransitionProp {
@@ -327,14 +428,9 @@ interface BenefitItemProp extends TransitionProp {
 }
 
 const BenefitItem = styled.li`
-  width: 150px;
-  height: 150px;
   border: solid 1px #707070;
-  padding: 34px 6px;
   box-sizing: border-box;
-  font-size: 15px;
   color: #707070;
-  line-height: 26px;
   text-align: justify;
   display: flex;
   align-items: center;
@@ -365,6 +461,28 @@ const BenefitItem = styled.li`
         `;
     }
   }}
+
+  @media screen and (min-width: 1024px) {
+    width: 150px;
+    height: 150px;
+    padding: 34px 6px;
+    font-size: 15px;
+    line-height: 26px;
+  }
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 150px;
+    height: 150px;
+    padding: 34px 6px;
+    font-size: 15px;
+    line-height: 26px;
+  }
+  @media screen and (max-width: 633px) {
+    width: 100px;
+    height: 100px;
+    padding: 22px 10px;
+    font-size: 9px;
+    line-height: 16px;
+  }
 `;
 
 export default Membership;

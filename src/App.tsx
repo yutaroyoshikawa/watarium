@@ -160,13 +160,32 @@ const GlobalStyle = createGlobalStyle`
 const Header = styled.header`
   position: fixed;
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  top: 0;
-  left: 61px;
   z-index: 1000;
-  height: 100vh;
+
+  @media screen and (min-width: 1024px) {
+    top: 0;
+    left: 61px;
+    height: 100vh;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    top: 20px;
+    left: 0;
+    width: 100vw;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+  }
+
+  @media screen and (max-width: 633px) {
+    top: 20px;
+    left: 0;
+    width: 100vw;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+  }
 `;
 
 const Logo = styled(Link)`
@@ -175,11 +194,29 @@ const Logo = styled(Link)`
   left: 61px;
   z-index: 1000;
   height: 55px;
+  display: inline-block;
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    top: 24px;
+    left: 28px;
+    width: 82px;
+  }
+
+  @media screen and (max-width: 633px) {
+    top: 24px;
+    left: 28px;
+    width: 82px;
+  }
 `;
 
 const MainContent = styled.main`
-  margin-left: 240px;
-  width: calc(100% - 240px);
+  min-width: 320px;
+  min-height: 568px;
+
+  @media screen and (min-width: 1024px) {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+  }
 `;
 
 export default App;

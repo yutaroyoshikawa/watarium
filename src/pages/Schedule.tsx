@@ -85,8 +85,12 @@ export default Schedule;
 
 const Wrap = styled.div`
   box-sizing: border-box;
-  @media screen and (max-width: 1900px) {
+  @media screen and (max-width: 1900px) and (min-width: 1024px) {
     padding: 0 130px 0 30px;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    padding: 0;
   }
 
   ${(props: StyledWrapProp) =>
@@ -126,6 +130,10 @@ const ScheduleWrap = styled.div`
   max-width: 965px;
   margin: 218px auto;
 
+  @media screen and (max-width: 633px) {
+    margin: 100px auto;
+  }
+
   ${(props: TransitionProp) => {
     switch (props.transitionStatus) {
       case "entering":
@@ -153,6 +161,15 @@ const ScheduleWrap = styled.div`
 const Title = styled.h1`
   font-size: 58px;
   color: #707070;
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    margin: 0 50px;
+    box-sizing: border-box;
+  }
+
+  @media screen and (max-width: 633px) {
+    font-size: 30px;
+  }
 `;
 
 const SubTitle = styled.span`
@@ -161,10 +178,20 @@ const SubTitle = styled.span`
   display: block;
   margin-top: 30px;
   line-height: 50px;
+
+  @media screen and (max-width: 633px) {
+    font-size: 20px;
+    line-height: 40px;
+    margin-top: 20px;
+  }
 `;
 
 const SumbnailWrapper = styled.figure`
   margin: 167px 0 53px 0;
+
+  @media screen and (max-width: 633px) {
+    margin: 100px 0 53px 0;
+  }
 `;
 
 const Sumbnail = styled.img`
@@ -174,9 +201,17 @@ const Sumbnail = styled.img`
 `;
 
 const OverView = styled.p`
-  width: 100%;
   color: #707070;
   font-size: 17px;
   text-align: justify;
   line-height: 40px;
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    margin: 0 50px;
+    box-sizing: border-box;
+  }
+
+  @media screen and (max-width: 633px) {
+    margin: 0 20px;
+  }
 `;

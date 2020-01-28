@@ -103,11 +103,17 @@ const Exhibitions: React.FC<Props> = props => {
 export default Exhibitions;
 
 const Wrap = styled.div`
-  margin: 0 auto;
   box-sizing: border-box;
   transition: padding 500ms ease;
-  @media screen and (max-width: 1900px) {
+
+  @media screen and (max-width: 1900px) and (min-width: 1024px) {
+    margin: 0 auto;
     padding: 10vw 100px 10vw 0;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    margin: 25vh auto;
+    overflow: hidden;
   }
 
   ${(props: StyledWrapProp) =>
@@ -118,7 +124,9 @@ const Wrap = styled.div`
           }
         `
       : css`
+        @media screen and (min-width: 1024px) {
           padding: 218px 164px 218px 0;
+        }
         `}
 
   ${(props: StyledWrapProp) => {
@@ -146,31 +154,65 @@ const Wrap = styled.div`
 `;
 
 const SumbnailWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  transform: translateX(100px);
-  margin-bottom: 240px;
-  @media screen and (max-width: 1900px) {
+  @media screen and (max-width: 1900px) and (min-width: 1025px) {
     transform: translateX(60px);
+    display: flex;
+    justify-content: center;
+    transform: translateX(100px);
+  }
+
+  @media screen and (min-width: 1024px) {
+    margin-bottom: 240px;
+    display: flex;
+    justify-content: center;
+    transform: translateX(100px);
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    /* margin-bottom: 120px; */
+    transform: translate(100px, -100px);
+  }
+
+  @media screen and (max-width: 633px) {
+
   }
 `;
 
 const InfoCard = styled.div`
-  width: 50vw;
-  max-width: 749px;
-  min-width: 512px;
-  height: 245px;
   padding: 50px;
   box-sizing: border-box;
-  position: absolute;
   z-index: 2;
-  transform: translate(-9vw, 22vw);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  background-color: #fff;
-  box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+
+  @media screen and (min-width: 1024px) {
+    width: 50vw;
+    height: 245px;
+    max-width: 749px;
+    min-width: 512px;
+    transform: translate(-9vw, 22vw);
+    box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    position: absolute;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 50vw;
+    height: 245px;
+    max-width: 749px;
+    min-width: 512px;
+    transform: translate(-9vw, -9vw);
+    box-shadow: -2px 2px 10px 0 rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    /* position: absolute; */
+  }
+
+  @media screen and (max-width: 366px) {
+    width: 100%;
+    height: 150px;
+  }
 `;
 
 const slideIn = keyframes`
@@ -189,6 +231,10 @@ const Title = styled.h2`
   color: #707070;
   opacity: 0;
   animation: ${slideIn} 500ms ease 1 forwards;
+
+  @media screen and (max-width: 1023px) and (min-width: 632px) {
+    font-size: 11px;
+  }
 `;
 
 const SubTitle = styled.span`
@@ -206,26 +252,62 @@ const Date = styled.time`
   opacity: 0;
   animation: ${slideIn} 500ms ease 1 forwards;
   animation-delay: 200ms;
+
+  @media screen and (max-width: 1023px) and (min-width: 632px) {
+    font-size: 11px;
+  }
 `;
 
 const Sumbnail = styled.img`
-  width: 45vw;
-  max-width: 734px;
-  min-width: 460px;
-  height: 35vw;
-  max-height: 621px;
-  min-height: 380px;
   object-fit: cover;
+
+  @media screen and (min-width: 1024px) {
+    width: 45vw;
+    max-width: 734px;
+    min-width: 460px;
+    height: 35vw;
+    max-height: 621px;
+    min-height: 380px;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    width: 45vw;
+    max-width: 734px;
+    min-width: 460px;
+    height: 35vw;
+    max-height: 621px;
+    min-height: 380px;
+  }
+
+  @media screen and (max-width: 633px) {
+    width: 100%;
+    height: 271px;
+  }
 `;
 
 const ExhibitionContent = styled.p`
-  width: 100%;
   max-width: 990px;
   font-size: 16px;
   color: #9d9d9d;
-  line-height: 40px;
-  padding: 0 40px;
-  margin: 0 auto;
   text-align: justify;
   box-sizing: border-box;
+
+  @media screen and (min-width: 1024px) {
+    margin: 0 auto;
+    padding: 0 40px;
+    line-height: 40px;
+  }
+
+  @media screen and (max-width: 1023px) and (min-width: 634px) {
+    margin: 0 auto;
+    padding: 0 50px;
+    line-height: 40px;
+  }
+
+  @media screen and (max-width: 366px) {
+    line-height: 30px;
+    font-size: 13px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
 `;
